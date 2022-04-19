@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:maid/pages/register/register.dart';
 import 'package:maid/widget/button_long.dart';
 import 'package:maid/widget/text_button.dart';
 
@@ -34,10 +35,17 @@ class LoginPage extends StatelessWidget {
             const ButtonLong(
               label: 'เข้าสู่ระบบ',
             ),
-            const Align(
+            Align(
                 alignment: Alignment.centerRight,
                 child: ButtonTextCustom(
                   label: 'ลงทะเบียน',
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const RegisterPage()),
+                    );
+                  },
                 ))
           ],
         ),
