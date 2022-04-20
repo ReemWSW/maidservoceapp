@@ -90,8 +90,7 @@ class AuthProvider with ChangeNotifier {
     };
     // print(registrationData);
     var res;
-    Uri uri = Uri.parse(AppUrl.baseURL + AppUrl.register);
-    print(uri);
+    Uri uri = Uri.parse(AppUrl.register);
     res = await post(uri,
             body: json.encode(registrationData),
             headers: {'Content-Type': 'application/json'})
@@ -110,7 +109,7 @@ class AuthProvider with ChangeNotifier {
 
       User authUser = User.fromJson(userData);
 
-      UserPreferences().saveUser(authUser);
+      // UserPreferences().saveUser(authUser);
       result = {
         'status': true,
         'message': 'ลงทะเบียนเสร็จสิ้น',
