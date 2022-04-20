@@ -5,13 +5,13 @@ class TextFieldCustom extends StatelessWidget {
     Key? key,
     required this.hintText,
     required this.icon,
-    required this.obscureText,
+    this.obscureText = false,
     this.validator,
   }) : super(key: key);
 
   final String hintText;
   final IconData icon;
-  final bool obscureText;
+  final bool? obscureText;
   final String? Function(String?)? validator;
 
   @override
@@ -20,7 +20,7 @@ class TextFieldCustom extends StatelessWidget {
       style: const TextStyle(
         fontWeight: FontWeight.w600,
       ),
-      obscureText: obscureText,
+      obscureText: obscureText!,
       // validator: (value) {
       //   if (value == null || value.isEmpty) {
       //     return 'Please enter some text';
