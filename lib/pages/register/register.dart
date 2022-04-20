@@ -1,6 +1,7 @@
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:maid/models/user.dart';
+import 'package:maid/pages/login/login.dart';
 import 'package:maid/providers/auth.dart';
 import 'package:maid/providers/user_provider.dart';
 import 'package:maid/widget/button_long.dart';
@@ -43,15 +44,10 @@ class _RegisterPageState extends State<RegisterPage> {
     AuthProvider auth = Provider.of<AuthProvider>(context, listen: false);
     final form = _formKey.currentState!;
     if (form.validate()) {
-      print(_image64);
-      print(_name);
-      print(_email);
-      print(_password);
-      print(_phone);
       form.save();
       auth
           .register(
-        _image64 == null ? '' : _image64,
+        _image64,
         _name!,
         _email!,
         _password!,
@@ -60,6 +56,10 @@ class _RegisterPageState extends State<RegisterPage> {
           .then((response) {
         if (response['status']) {
           User user = response['data'];
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const LoginPage()),
+          );
         } else {
           Flushbar(
             title: "ไม่สามารถลงทะเบียนได้",

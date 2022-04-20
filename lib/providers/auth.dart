@@ -38,7 +38,7 @@ class AuthProvider with ChangeNotifier {
     notifyListeners();
 
     Response response = await post(
-      Uri.parse(AppUrl.baseURL + AppUrl.login),
+      Uri.parse(AppUrl.login),
       body: json.encode(loginData),
       headers: {'Content-Type': 'application/json'},
     );
@@ -49,7 +49,7 @@ class AuthProvider with ChangeNotifier {
 
       User authUser = User.fromJson(userData);
 
-      UserPreferences().saveUser(authUser);
+      // UserPreferences().saveUser(authUser);
 
       _loggedInStatus = Status.LoggedIn;
       notifyListeners();
