@@ -7,12 +7,18 @@ class TextFieldCustom extends StatelessWidget {
     required this.icon,
     this.obscureText = false,
     this.validator,
+    this.onChanged,
+    this.onSaved,
+    this.keyboardType = TextInputType.text,
   }) : super(key: key);
 
   final String hintText;
   final IconData icon;
   final bool? obscureText;
   final String? Function(String?)? validator;
+  final Function(String)? onChanged;
+  final String? Function(String?)? onSaved;
+  final TextInputType? keyboardType;
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +26,7 @@ class TextFieldCustom extends StatelessWidget {
       style: const TextStyle(
         fontWeight: FontWeight.w600,
       ),
+      keyboardType: keyboardType,
       obscureText: obscureText!,
       // validator: (value) {
       //   if (value == null || value.isEmpty) {
@@ -28,6 +35,8 @@ class TextFieldCustom extends StatelessWidget {
       //   return null;
       // },
       validator: validator,
+      onChanged: onChanged,
+      onSaved: onSaved,
       decoration: InputDecoration(
         prefixIcon: Icon(icon, color: Color.fromRGBO(50, 62, 72, 1.0)),
         hintText: hintText,
