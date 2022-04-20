@@ -1,10 +1,20 @@
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
+import 'package:maid/models/user.dart';
+import 'package:maid/providers/auth.dart';
+import 'package:maid/providers/user_provider.dart';
 import 'package:maid/widget/button_long.dart';
 import 'package:maid/widget/textfield_custom.dart';
+import 'package:provider/provider.dart';
 
-class RegisterPage extends StatelessWidget {
-  RegisterPage({Key? key}) : super(key: key);
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({Key? key}) : super(key: key);
 
+  @override
+  State<RegisterPage> createState() => _RegisterPageState();
+}
+
+class _RegisterPageState extends State<RegisterPage> {
   final _formKey = GlobalKey<FormState>();
 
   String? emailValidate(String? value) {
@@ -19,11 +29,61 @@ class RegisterPage extends StatelessWidget {
 
   String? passValidate(String? value) =>
       value!.isEmpty ? 'กรุณาระบุรหัสผ่าน' : null;
+
   String? nameValidate(String? value) =>
       value!.isEmpty ? 'กรุณาระบุชื่อนาทสกุล' : null;
 
+  String? phoneValidate(String? value) =>
+      value!.isEmpty ? 'กรุณาระบุชื่อนาทสกุล' : null;
+
+  String? _name, _email, _password, _phone;
+  String _image64 = ' ';
+
+  void submitRegister() {
+    AuthProvider auth = Provider.of<AuthProvider>(context, listen: false);
+    final form = _formKey.currentState!;
+    if (form.validate()) {
+      print(_image64);
+      print(_name);
+      print(_email);
+      print(_password);
+      print(_phone);
+      form.save();
+      auth
+          .register(
+        _image64 == null ? '' : _image64,
+        _name!,
+        _email!,
+        _password!,
+        _phone!,
+      )
+          .then((response) {
+        if (response['status']) {
+          User user = response['data'];
+        } else {
+          Flushbar(
+            title: "ไม่สามารถลงทะเบียนได้",
+            backgroundColor: Colors.red,
+            message: response['data'],
+            duration: const Duration(seconds: 5),
+          ).show(context);
+        }
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    AuthProvider auth = Provider.of<AuthProvider>(context, listen: false);
+
+    var loading = Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: const <Widget>[
+        CircularProgressIndicator(),
+        Text("กรุณารอสักครู่")
+      ],
+    );
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -45,28 +105,41 @@ class RegisterPage extends StatelessWidget {
                     hintText: 'ชื่อ นามสกุล',
                     icon: Icons.people,
                     validator: nameValidate,
+                    onSaved: (value) => _name = value,
                   ),
                   const SizedBox(height: 15),
                   TextFieldCustom(
                     hintText: 'อีเมลล์',
                     icon: Icons.email,
                     validator: emailValidate,
+                    onSaved: (value) => _email = value,
+                    keyboardType: TextInputType.emailAddress,
                   ),
                   const SizedBox(height: 15),
                   TextFieldCustom(
                     hintText: 'รหัสผ่าน',
                     icon: Icons.password,
                     validator: passValidate,
+                    obscureText: true,
+                    onSaved: (value) => _password = value,
+                  ),
+                  const SizedBox(height: 15),
+                  TextFieldCustom(
+                    hintText: 'เบอร์โทรศัพท์',
+                    icon: Icons.phone,
+                    validator: phoneValidate,
+                    onSaved: (value) => _phone = value,
+                    keyboardType: TextInputType.number,
                   ),
                   const SizedBox(height: 30),
                 ],
               ),
-              ButtonLong(
-                label: 'ลงทะเบียน',
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {}
-                },
-              )
+              auth.loggedInStatus == Status.Authenticating
+                  ? loading
+                  : ButtonLong(
+                      label: 'ลงทะเบียน',
+                      onPressed: submitRegister,
+                    )
             ],
           ),
         ),
