@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../pages/home/home.dart';
 import '../pages/list/list.dart';
 import '../pages/home/texttest.dart';
+import '../pages/mywork/my_work.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -24,10 +25,7 @@ class _HomePageState extends State<HomePage> {
   static final List<Widget> _widgetOptions = <Widget>[
     const Home(),
     const ListPage(),
-    const NewWidget(
-      optionStyle: optionStyle,
-      label: '3',
-    ),
+    const MyWorkPage(),
     const NewWidget(
       optionStyle: optionStyle,
       label: '4',

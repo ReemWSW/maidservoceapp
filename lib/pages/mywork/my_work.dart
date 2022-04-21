@@ -11,10 +11,10 @@ class MyWorkPage extends StatelessWidget {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.redAccent,
+          backgroundColor: Colors.green,
           elevation: 0,
           bottom: const TabBar(
-              labelColor: Colors.redAccent,
+              labelColor: Colors.green,
               unselectedLabelColor: Colors.white,
               indicatorSize: TabBarIndicatorSize.label,
               indicator: BoxDecoration(
