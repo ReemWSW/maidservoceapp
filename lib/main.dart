@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'pages/home/bottombar.dart';
-import 'pages/home/home.dart';
+import 'widget/bottombar.dart';
 import 'providers/auth.dart';
 import 'providers/user_provider.dart';
 
