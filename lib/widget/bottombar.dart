@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
-import 'home.dart';
-import 'texttest.dart';
+import '../pages/home/home.dart';
+import '../pages/list/list.dart';
+import '../pages/home/texttest.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -15,17 +15,20 @@ class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   static final List<Widget> _widgetOptions = <Widget>[
     const Home(),
-    NewWidget(
-      optionStyle: optionStyle,
-      label: '2',
-    ),
-    NewWidget(
+    const ListPage(),
+    const NewWidget(
       optionStyle: optionStyle,
       label: '3',
     ),
-    NewWidget(
+    const NewWidget(
       optionStyle: optionStyle,
       label: '4',
     ),
