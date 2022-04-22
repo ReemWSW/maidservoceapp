@@ -5,6 +5,7 @@ import 'package:maid/widget/button_long.dart';
 import 'package:maid/widget/textfield_custom.dart';
 
 import 'address.dart';
+import 'widgets/method.dart';
 
 class OrderPage extends StatefulWidget {
   const OrderPage({
@@ -29,15 +30,6 @@ class _OrderPageState extends State<OrderPage> {
 
   String? _address, _detail, _time, _date;
   String? _typeSelected = null;
-
-  Text label(String label) {
-    return Text(
-      label,
-      style: const TextStyle(
-        fontSize: 15,
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
