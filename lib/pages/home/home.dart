@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:maid/utils/enum.dart';
 
-import 'card_category.dart';
+import 'widgets/card_category.dart';
 
 class Home extends StatelessWidget {
   const Home({
@@ -39,6 +40,7 @@ class Home extends StatelessWidget {
                 'assets/images/wash.svg',
                 height: 100,
               ),
+              categories: Categories.wash,
             ),
             CardCategoryies(
               label: 'ทำความสะอาดบ้าน',
@@ -46,6 +48,7 @@ class Home extends StatelessWidget {
                 'assets/images/clean.svg',
                 height: 100,
               ),
+              categories: Categories.clean,
             ),
           ],
         ),
@@ -59,6 +62,7 @@ class Home extends StatelessWidget {
                 'assets/images/furniture.svg',
                 height: 100,
               ),
+              categories: Categories.furniture,
             ),
             CardCategoryies(
               label: 'ทำความสะอาดทั้งหมด',
@@ -66,6 +70,7 @@ class Home extends StatelessWidget {
                 'assets/images/all.svg',
                 height: 100,
               ),
+              categories: Categories.all,
             ),
           ],
         )
