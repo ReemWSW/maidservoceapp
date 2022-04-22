@@ -4,7 +4,7 @@ class TextFieldCustom extends StatelessWidget {
   const TextFieldCustom({
     Key? key,
     required this.hintText,
-    required this.icon,
+    this.icon = null,
     this.obscureText = false,
     this.validator,
     this.onChanged,
@@ -14,7 +14,7 @@ class TextFieldCustom extends StatelessWidget {
   }) : super(key: key);
 
   final String hintText;
-  final IconData icon;
+  final IconData? icon;
   final bool? obscureText;
   final String? Function(String?)? validator;
   final Function(String)? onChanged;
