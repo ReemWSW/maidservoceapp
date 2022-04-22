@@ -3,6 +3,8 @@ import 'package:maid/pages/home/widgets/method.dart';
 import 'package:maid/widget/button_long.dart';
 import 'package:maid/widget/textfield_custom.dart';
 
+import 'add_address.dart';
+
 class AddressPage extends StatelessWidget {
   const AddressPage({Key? key}) : super(key: key);
 
@@ -22,7 +24,13 @@ class AddressPage extends StatelessWidget {
               children: [
                 label('ที่อยู่'),
                 const SizedBox(height: 20),
-                const TextFieldCustom(hintText: "จังหวัด, เขต/อำเภอ"),
+                TextFieldCustom(
+                  hintText: "จังหวัด, เขต/อำเภอ",
+                  onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) => const AddAddressPage())),
+                ),
                 const SizedBox(height: 10),
                 const TextFieldCustom(hintText: "รายละเอียดที่อยู่"),
               ],
