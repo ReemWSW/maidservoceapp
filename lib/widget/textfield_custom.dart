@@ -10,6 +10,7 @@ class TextFieldCustom extends StatelessWidget {
     this.onChanged,
     this.onSaved,
     this.keyboardType = TextInputType.text,
+    this.onTap,
   }) : super(key: key);
 
   final String hintText;
@@ -19,6 +20,7 @@ class TextFieldCustom extends StatelessWidget {
   final Function(String)? onChanged;
   final String? Function(String?)? onSaved;
   final TextInputType? keyboardType;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +39,9 @@ class TextFieldCustom extends StatelessWidget {
       validator: validator,
       onChanged: onChanged,
       onSaved: onSaved,
+      onTap: onTap,
+      maxLines: 3,
+      minLines: 1,
       decoration: InputDecoration(
         prefixIcon: Icon(icon, color: Color.fromRGBO(50, 62, 72, 1.0)),
         hintText: hintText,
