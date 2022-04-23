@@ -11,6 +11,7 @@ class TextFieldCustom extends StatelessWidget {
     this.onSaved,
     this.keyboardType = TextInputType.text,
     this.onTap,
+    this.controller,
     this.enabled = true,
     this.readOnly = false,
   }) : super(key: key);
@@ -25,6 +26,7 @@ class TextFieldCustom extends StatelessWidget {
   final VoidCallback? onTap;
   final bool? enabled;
   final bool? readOnly;
+  final TextEditingController? controller;
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +48,7 @@ class TextFieldCustom extends StatelessWidget {
       onTap: onTap,
       enabled: enabled,
       readOnly: readOnly!,
+      controller: controller,
       maxLines: 3,
       minLines: 1,
       decoration: InputDecoration(
