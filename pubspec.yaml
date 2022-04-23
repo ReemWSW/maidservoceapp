@@ -75,6 +75,9 @@ flutter:
     - assets/images/wash.svg
     - assets/json/detail.json
     - assets/json/select.json
+    - assets/json/thai_amphures.json
+    - assets/json/thai_provinces.json
+    - assets/json/thai_tombons.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
