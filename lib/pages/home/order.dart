@@ -5,6 +5,7 @@ import 'package:maid/widget/button_long.dart';
 import 'package:maid/widget/textfield_custom.dart';
 
 import 'address.dart';
+import 'detail_category.dart';
 import 'widgets/method.dart';
 
 class OrderPage extends StatefulWidget {
@@ -28,8 +29,32 @@ class _OrderPageState extends State<OrderPage> {
   String? addressValidate(String? value) =>
       value!.isEmpty ? 'กรุณาที่อยู่' : null;
 
-  String? _address, _detail, _time, _date;
+  String? _address, _detail, _time, _date, _category;
   String? _typeSelected = null;
+  int index = 0;
+
+  @override
+  void initState() {
+    switch (widget.category) {
+      case Categories.wash:
+        index = 0;
+        _category = "ซักผ้า";
+        break;
+      case Categories.clean:
+        index = 1;
+        _category = "ทำความสะอาดบ้าน";
+        break;
+      case Categories.furniture:
+        index = 2;
+        _category = "ทำความสะอาดเฟอร์นิเจอร์";
+        break;
+      case Categories.all:
+        index = 3;
+        _category = "ทำความสะอาดทั้งหมด";
+        break;
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -86,7 +111,17 @@ class _OrderPageState extends State<OrderPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text('${widget.category}'),
+        title: Text('$_category'),
+        actions: [
+          IconButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => DetailCategoryPage(index: index)));
+              },
+              icon: const Icon(Icons.info))
+        ],
       ),
       body: Container(
         margin: const EdgeInsets.all(16),
