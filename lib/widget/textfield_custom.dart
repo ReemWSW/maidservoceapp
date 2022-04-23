@@ -4,13 +4,15 @@ class TextFieldCustom extends StatelessWidget {
   const TextFieldCustom({
     Key? key,
     required this.hintText,
-    this.icon = null,
+    this.icon,
     this.obscureText = false,
     this.validator,
     this.onChanged,
     this.onSaved,
     this.keyboardType = TextInputType.text,
     this.onTap,
+    this.enabled = true,
+    this.readOnly = false,
   }) : super(key: key);
 
   final String hintText;
@@ -21,6 +23,8 @@ class TextFieldCustom extends StatelessWidget {
   final String? Function(String?)? onSaved;
   final TextInputType? keyboardType;
   final VoidCallback? onTap;
+  final bool? enabled;
+  final bool? readOnly;
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +44,8 @@ class TextFieldCustom extends StatelessWidget {
       onChanged: onChanged,
       onSaved: onSaved,
       onTap: onTap,
+      enabled: enabled,
+      readOnly: readOnly!,
       maxLines: 3,
       minLines: 1,
       decoration: InputDecoration(
