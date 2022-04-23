@@ -31,11 +31,10 @@ class _OrderPageState extends State<OrderPage> {
 
   String? _address, _detail, _time, _date;
   String? _typeSelected = null;
-  int? index;
+  int index = 0;
 
   @override
   void initState() {
-    super.initState();
     switch (widget.category) {
       case Categories.wash:
         index = 0;
@@ -50,6 +49,7 @@ class _OrderPageState extends State<OrderPage> {
         index = 3;
         break;
     }
+    super.initState();
   }
 
   @override
@@ -114,7 +114,7 @@ class _OrderPageState extends State<OrderPage> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (_) => DetailCategoryPage(index: index!)));
+                        builder: (_) => DetailCategoryPage(index: index)));
               },
               icon: const Icon(Icons.info))
         ],

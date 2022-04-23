@@ -17,23 +17,14 @@ class _DetailCategoryPageState extends State<DetailCategoryPage> {
   List data = [];
   List dataDetail = [];
 
+  String? name;
+
   Future<String> loadJsonData() async {
     var jsonText = await rootBundle.loadString('assets/json/detail.json');
     setState(() {
       data = json.decode(jsonText);
       dataDetail = data[widget.index]['detail'];
-      print(dataDetail);
-
-      // for (var item in data) {
-      //   // print(item['name']);
-      //   // print(item['detail']);
-      //   for (var item in item['detail']) {
-      //     // print(item['head']);
-      //     for (var item in item['type']) {
-      //       print(item);
-      //     }
-      //   }
-      // }
+      name = data[widget.index]["name"];
     });
     return 'success';
   }
@@ -46,26 +37,58 @@ class _DetailCategoryPageState extends State<DetailCategoryPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("${widget.index}"),
-        // title: const Text('รายละเอียดบริการ'),
-      ),
-      body: ListView.builder(
-        itemCount: dataDetail.isEmpty ? 0 : dataDetail.length,
-        itemBuilder: (BuildContext context, int index) {
-          var head = data[index]['head'];
-          var type = data[index]['type'];
-
-          return const ListTile(
-            leading: CircleAvatar(
-              child: Icon(Icons.account_box),
+    return FutureBuilder<String>(
+        future: loadJsonData(),
+        builder: (
+          BuildContext context,
+          AsyncSnapshot<String> snapshot,
+        ) {
+          return Scaffold(
+            appBar: AppBar(
+              title: Text("$name"),
+              // title: const Text('รายละเอียดบริการ'),
             ),
-            // title: Text(head),
-            // subtitle: Text(type),
+            body: ListView.builder(
+              itemCount: dataDetail.isEmpty ? 0 : dataDetail.length,
+              itemBuilder: (BuildContext context, int index) {
+                return cardList(dataDetail, index, context);
+              },
+            ),
           );
-        },
-      ),
+        });
+  }
+
+  Widget cardList(List detail, int indexde, BuildContext context) {
+    return Column(
+      children: [
+        Container(
+            height: 150,
+            margin: const EdgeInsets.all(16),
+            child: ListView.builder(
+              itemCount: detail[indexde]['type'].length,
+              itemBuilder: (context, index) => Text(
+                detail[indexde]['type'][index],
+                style: TextStyle(
+                  color: index == 0 ? Colors.red : Colors.black,
+                ),
+              ),
+            )
+
+            // ListView(
+            //   children: [
+            //     Text(
+            //       "${detail[index]['head']}",
+            //       style: const TextStyle(color: Colors.red),
+            //     ),
+            //     for (int i = 0; i < detail[index]['type'].length; i++)
+            //       Text(detail[index]['type'][i])
+            //   ],
+            // ),
+            ),
+        const Divider(
+          color: Colors.black,
+        )
+      ],
     );
   }
 }
