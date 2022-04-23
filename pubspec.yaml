@@ -73,6 +73,8 @@ flutter:
     - assets/images/clean.svg
     - assets/images/furniture.svg
     - assets/images/wash.svg
+    - assets/json/detail.json
+    - assets/json/select.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
