@@ -5,6 +5,7 @@ import 'package:maid/pages/home/widgets/method.dart';
 import 'package:maid/widget/button_long.dart';
 import 'package:maid/widget/textfield_custom.dart';
 
+import 'widgets/amphure.dart';
 import 'widgets/provinces.dart';
 
 class AddressPage extends StatefulWidget {
@@ -22,7 +23,7 @@ class _AddressPageState extends State<AddressPage> {
   String? _province, _amphure, _tombon;
 
   List? _resultProvince;
-  List? _resulTamphure;
+  List? _resultAmphure;
   List? _resultTombon;
 
   @override
@@ -65,7 +66,22 @@ class _AddressPageState extends State<AddressPage> {
                 // dropDown(context, 'จังหวัด', dataProvinces!),
                 const SizedBox(height: 10),
                 label('เขต/อำเภอ'),
-                const TextFieldCustom(hintText: "เขต/อำเภอ"),
+                TextFieldCustom(
+                  hintText: "เขต/อำเภอ",
+                  readOnly: true,
+                  controller: _amphureController,
+                  onTap: () async {
+                    _resultAmphure = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => AmphureListScreen(
+                                idpass: _resultProvince![1])));
+                    _amphure = _resultAmphure![0];
+                    setState(() {
+                      _amphureController.text = _amphure!;
+                    });
+                  },
+                ),
                 // dropDown(context, 'เขต/อำเภอ', dataAmphures!),
                 const SizedBox(height: 10),
                 label('แขวง/ตำบล'),
