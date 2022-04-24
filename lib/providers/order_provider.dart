@@ -7,6 +7,9 @@ import 'package:maid/utils/app_url.dart';
 
 class OrderProvider with ChangeNotifier {
   Future<Map<String, dynamic>> order(
+    String customerImage,
+    String customerName,
+    String customerPhone,
     String addressDetail,
     String addressTombon,
     String addressAmphure,
@@ -19,6 +22,11 @@ class OrderProvider with ChangeNotifier {
     var result;
 
     final Map<String, dynamic> orderData = {
+      "customer": {
+        "image": customerImage,
+        "name": customerName,
+        "phone": customerPhone,
+      },
       "address": {
         "detail": addressDetail,
         "tombon": addressTombon,
@@ -43,7 +51,6 @@ class OrderProvider with ChangeNotifier {
 
       Order authUser = Order.fromJson(userData);
 
-      // UserPreferences().saveUser(authUser);
       result = {'status': true, 'message': 'Successful', 'user': authUser};
     } else {
       result = {

@@ -50,6 +50,8 @@ class _OrderPageState extends State<OrderPage> {
   List? filterData;
   List? address;
 
+  String? _customerName, _customePhone, _customerImage64 = '';
+
   Future<String> loadJsonData() async {
     var jsonText = await rootBundle.loadString('assets/json/select.json');
     setState(() {
@@ -61,39 +63,45 @@ class _OrderPageState extends State<OrderPage> {
 
   void submitOrder() {
     OrderProvider order = Provider.of<OrderProvider>(context, listen: false);
-    Future<User> user = UserPreferences().getUser();
-    user.then((value) => print(value.email));
+    UserPreferences().getUser().then((value) {
+      _customerImage64 = value.image;
+      _customerName = value.name;
+      _customePhone = value.phone;
+    });
     final form = _formKey.currentState!;
-    // if (form.validate()) {
-    //   form.save();
-    //   // order
-    //   //     .order(
-    //   //   address![0],
-    //   //   address![1],
-    //   //   address![2],
-    //   //   address![3],
-    //   //   _detail!,
-    //   //   _selectedDate,
-    //   //   _category!,
-    //   //   _typeSelected!,
-    //   // )
-    //   //     .then((response) {
-    //   //   if (response['status']) {
-    //   //     Order order = response['data'];
-    //   //     Navigator.push(
-    //   //       context,
-    //   //       MaterialPageRoute(builder: (context) => const HomePage()),
-    //   //     );
-    //   //   } else {
-    //   //     Flushbar(
-    //   //       title: "ไม่สามารถลงทะเบียนได้",
-    //   //       backgroundColor: Colors.red,
-    //   //       message: response['data'],
-    //   //       duration: const Duration(seconds: 5),
-    //   //     ).show(context);
-    //   //   }
-    //   // });
-    // }
+    if (form.validate()) {
+      form.save();
+      order
+          .order(
+        _customerImage64!,
+        _customerName!,
+        _customePhone!,
+        address![0],
+        address![1],
+        address![2],
+        address![3],
+        _detail!,
+        _selectedDate,
+        _category!,
+        _typeSelected!,
+      )
+          .then((response) {
+        if (response['status']) {
+          Order order = response['data'];
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const HomePage()),
+          );
+        } else {
+          Flushbar(
+            title: "ไม่สามารถลงทะเบียนได้",
+            backgroundColor: Colors.red,
+            message: response['data'],
+            duration: const Duration(seconds: 5),
+          ).show(context);
+        }
+      });
+    }
   }
 
   @override
