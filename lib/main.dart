@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:maid/pages/login/login.dart';
 import 'package:provider/provider.dart';
 
+import 'providers/order_provider.dart';
 import 'widget/bottombar.dart';
 import 'providers/auth.dart';
 import 'providers/user_provider.dart';
@@ -19,9 +20,10 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(create: (_) => UserProvider()),
+        ChangeNotifierProvider(create: (_) => OrderProvider()),
       ],
       child: MaterialApp(
-        title: 'Flutter Demo',
+        title: 'Maid Service',
         theme: ThemeData(
           primarySwatch: Colors.green,
         ),
