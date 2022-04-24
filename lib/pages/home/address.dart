@@ -7,6 +7,7 @@ import 'package:maid/widget/textfield_custom.dart';
 
 import 'widgets/amphure.dart';
 import 'widgets/provinces.dart';
+import 'widgets/tombon.dart';
 
 class AddressPage extends StatefulWidget {
   const AddressPage({Key? key}) : super(key: key);
@@ -77,6 +78,7 @@ class _AddressPageState extends State<AddressPage> {
                             builder: (_) => AmphureListScreen(
                                 idpass: _resultProvince![1])));
                     _amphure = _resultAmphure![0];
+                    print(_resultAmphure);
                     setState(() {
                       _amphureController.text = _amphure!;
                     });
@@ -85,7 +87,22 @@ class _AddressPageState extends State<AddressPage> {
                 // dropDown(context, 'เขต/อำเภอ', dataAmphures!),
                 const SizedBox(height: 10),
                 label('แขวง/ตำบล'),
-                const TextFieldCustom(hintText: "แขวง/ตำบล"),
+                TextFieldCustom(
+                  hintText: "แขวง/ตำบล",
+                  readOnly: true,
+                  controller: _tombonController,
+                  onTap: () async {
+                    _resultTombon = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) =>
+                                TombonsListScreen(idpass: _resultAmphure![1])));
+                    _tombon = _resultTombon![0];
+                    setState(() {
+                      _tombonController.text = _tombon!;
+                    });
+                  },
+                ),
                 // dropDown(context, 'แขวง/ตำบล', dataTombons!),
                 const SizedBox(height: 10),
                 const SizedBox(height: 10),
