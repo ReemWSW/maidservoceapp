@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:maid/utils/enum.dart';
 import 'package:maid/widget/button_long.dart';
@@ -21,6 +24,8 @@ class OrderPage extends StatefulWidget {
 }
 
 class _OrderPageState extends State<OrderPage> {
+  final _formKey = GlobalKey<FormState>();
+
   final TextEditingController _timeController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
@@ -33,6 +38,18 @@ class _OrderPageState extends State<OrderPage> {
   String? _address, _detail, _time, _date, _category;
   String? _typeSelected = null;
   int index = 0;
+
+  List? data;
+  List? filterData;
+  String? _head;
+
+  Future<String> loadJsonData() async {
+    var jsonText = await rootBundle.loadString('assets/json/select.json');
+    setState(() {
+      data = json.decode(jsonText);
+    });
+    return 'success';
+  }
 
   @override
   void initState() {
@@ -54,6 +71,7 @@ class _OrderPageState extends State<OrderPage> {
         _category = "ทำความสะอาดทั้งหมด";
         break;
     }
+    loadJsonData();
     super.initState();
   }
 
@@ -89,6 +107,12 @@ class _OrderPageState extends State<OrderPage> {
     );
 
     final addressTextfield = TextFieldCustom(
+      hintText: 'ที่อยู่',
+      icon: Icons.location_on,
+      controller: _addressController,
+      validator: addressValidate,
+      onSaved: (value) => _address = value,
+      readOnly: true,
       onTap: () async {
         _address = await Navigator.push(
           context,
@@ -100,11 +124,6 @@ class _OrderPageState extends State<OrderPage> {
           _addressController.text = _address!;
         });
       },
-      hintText: 'ที่อยู่',
-      icon: Icons.location_on,
-      controller: _addressController,
-      validator: addressValidate,
-      onSaved: (value) => _address = value,
     );
 
     final detailTextfield = TextFieldCustom(
@@ -130,33 +149,41 @@ class _OrderPageState extends State<OrderPage> {
       ),
       body: Container(
         margin: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
-              children: [
-                const SizedBox(height: 10),
-                label('สถานที่รับริการ'),
-                addressTextfield,
-                const SizedBox(height: 20),
-                label('เลือกรูปแบบการบริการที่ต้องการ'),
-                dropdownType(),
-                const SizedBox(height: 20),
-                label('รายละเอียดเพิ่มเติม'),
-                detailTextfield,
-                const SizedBox(height: 20),
-                label('เลือกวันที่ต้องการรับบริการ'),
-                Row(
-                  children: [
-                    sizedBoxDate,
-                    sizedBoxTime,
-                  ],
-                ),
-              ],
-            ),
-            ButtonLong(label: 'บันทึก', onPressed: () {})
-          ],
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              FutureBuilder(
+                future: loadJsonData(),
+                builder: (context, snapshot) => snapshot.hasData
+                    ? Column(
+                        children: [
+                          const SizedBox(height: 10),
+                          label('สถานที่รับริการ'),
+                          addressTextfield,
+                          const SizedBox(height: 20),
+                          label('${data![index]["head"]}'),
+                          dropdownType(),
+                          const SizedBox(height: 20),
+                          label('รายละเอียดเพิ่มเติม'),
+                          detailTextfield,
+                          const SizedBox(height: 20),
+                          label('เลือกวันที่ต้องการรับบริการ'),
+                          Row(
+                            children: [
+                              sizedBoxDate,
+                              sizedBoxTime,
+                            ],
+                          ),
+                        ],
+                      )
+                    : CircularProgressIndicator(),
+              ),
+              ButtonLong(label: 'บันทึก', onPressed: () {})
+            ],
+          ),
         ),
       ),
     );
@@ -165,12 +192,7 @@ class _OrderPageState extends State<OrderPage> {
   DropdownButtonFormField<String> dropdownType() {
     return DropdownButtonFormField(
       decoration: InputDecoration(
-        labelText: "เลือกแบบการบริการที่ต้องการ",
-        labelStyle: const TextStyle(color: Colors.black),
-        enabledBorder: OutlineInputBorder(
-          borderSide: const BorderSide(color: Colors.grey, width: 1),
-          borderRadius: BorderRadius.circular(5),
-        ),
+        hintText: data![index]["head"],
         border: OutlineInputBorder(
           borderSide: const BorderSide(color: Colors.grey, width: 1),
           borderRadius: BorderRadius.circular(5),
