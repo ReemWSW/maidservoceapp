@@ -9,7 +9,7 @@ import 'package:maid/widget/textfield_custom.dart';
 
 import 'address.dart';
 import 'detail_category.dart';
-import 'widgets/method.dart';
+import '../home/widgets/method.dart';
 
 class OrderPage extends StatefulWidget {
   const OrderPage({
@@ -49,6 +49,16 @@ class _OrderPageState extends State<OrderPage> {
       data = json.decode(jsonText);
     });
     return 'success';
+  }
+
+  void submitOrder() {
+    if (_formKey.currentState!.validate()) {
+      print("address: $_address");
+      print("detail: $_detail");
+      print("time: $_time");
+      print("date: $_date");
+      print("category: $_category");
+    }
   }
 
   @override
@@ -129,7 +139,11 @@ class _OrderPageState extends State<OrderPage> {
     final detailTextfield = TextFieldCustom(
       hintText: 'รายละเอียดเพิ่มเติม',
       icon: Icons.details,
-      onSaved: (value) => _detail = value,
+      onChanged: (value) {
+        setState(() {
+          _detail = value;
+        });
+      },
     );
 
     return Scaffold(
@@ -179,9 +193,9 @@ class _OrderPageState extends State<OrderPage> {
                           ),
                         ],
                       )
-                    : CircularProgressIndicator(),
+                    : const CircularProgressIndicator(),
               ),
-              ButtonLong(label: 'บันทึก', onPressed: () {})
+              ButtonLong(label: 'บันทึก', onPressed: submitOrder)
             ],
           ),
         ),

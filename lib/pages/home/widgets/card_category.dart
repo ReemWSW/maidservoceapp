@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:maid/utils/enum.dart';
 
-import '../order.dart';
+import '../../order/order.dart';
 
 class CardCategoryies extends StatelessWidget {
   const CardCategoryies({
