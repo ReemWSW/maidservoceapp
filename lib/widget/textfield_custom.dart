@@ -49,7 +49,7 @@ class TextFieldCustom extends StatelessWidget {
       enabled: enabled,
       readOnly: readOnly!,
       controller: controller,
-      maxLines: 3,
+      maxLines: obscureText! ? 1 : 3,
       minLines: 1,
       decoration: InputDecoration(
         prefixIcon: Icon(icon, color: Color.fromRGBO(50, 62, 72, 1.0)),
