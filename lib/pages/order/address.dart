@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:flutter/services.dart';
-import 'package:maid/pages/home/widgets/method.dart';
+import 'package:maid/widget/method.dart';
 import 'package:maid/widget/button_long.dart';
 import 'package:maid/widget/textfield_custom.dart';
 

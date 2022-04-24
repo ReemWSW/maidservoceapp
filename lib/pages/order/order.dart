@@ -9,7 +9,7 @@ import 'package:maid/widget/textfield_custom.dart';
 
 import 'address.dart';
 import 'detail_category.dart';
-import '../home/widgets/method.dart';
+import '../../widget/method.dart';
 
 class OrderPage extends StatefulWidget {
   const OrderPage({
@@ -113,20 +113,20 @@ class _OrderPageState extends State<OrderPage> {
       onChanged: (value) => _detail = value,
     );
 
+    var iconDetail = IconButton(
+        onPressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (_) => DetailCategoryPage(index: index)));
+        },
+        icon: const Icon(Icons.info));
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text('$_category'),
-        actions: [
-          IconButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (_) => DetailCategoryPage(index: index)));
-              },
-              icon: const Icon(Icons.info))
-        ],
+        actions: [iconDetail],
       ),
       body: Container(
         margin: const EdgeInsets.all(16),
@@ -243,8 +243,6 @@ class _OrderPageState extends State<OrderPage> {
                 pickedDate.day,
               );
             });
-          } else {
-            print("Date is not selected");
           }
         },
       ),
@@ -277,8 +275,4 @@ class _OrderPageState extends State<OrderPage> {
       }).toList(),
     );
   }
-
-  Future<void> datePicker(BuildContext context) async {}
-
-  Future<void> timePicker(BuildContext context) async {}
 }
