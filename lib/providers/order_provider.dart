@@ -12,7 +12,7 @@ class OrderProvider with ChangeNotifier {
     String addressAmphure,
     String addressProvince,
     String detail,
-    String selectedDate,
+    DateTime selectedDate,
     String category,
     String typeSelected,
   ) async {

@@ -5,7 +5,7 @@ class Order {
   String? categoty;
   String? type;
   String? detail;
-  String? datetime;
+  DateTime? datetime;
 
   Order(
       {this.customer,
