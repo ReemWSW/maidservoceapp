@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:maid/pages/login/login.dart';
 import 'package:provider/provider.dart';
 
 import 'widget/bottombar.dart';
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.green,
         ),
-        home: const HomePage(),
+        home: const LoginPage(),
       ),
     );
   }

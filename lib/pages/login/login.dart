@@ -5,6 +5,7 @@ import 'package:maid/models/user.dart';
 import 'package:maid/pages/register/register.dart';
 import 'package:maid/providers/auth.dart';
 import 'package:maid/providers/user_provider.dart';
+import 'package:maid/widget/bottombar.dart';
 import 'package:maid/widget/button_long.dart';
 import 'package:maid/widget/text_button.dart';
 
@@ -41,7 +42,8 @@ class _LoginPageState extends State<LoginPage> {
         if (response['status']) {
           User user = response['user'];
           Provider.of<UserProvider>(context, listen: false).setUser(user);
-          print('Connect success');
+          Navigator.push(
+              context, MaterialPageRoute(builder: (_) => const HomePage()));
         } else {
           Flushbar(
             title: "ไม่สามารถเข้าสู่ระบบได้",
