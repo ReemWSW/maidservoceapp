@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:maid/models/user.dart';
 import 'package:maid/pages/login/login.dart';
 import 'package:maid/providers/auth.dart';
-import 'package:maid/providers/user_provider.dart';
 import 'package:maid/widget/button_long.dart';
 import 'package:maid/widget/textfield_custom.dart';
 import 'package:provider/provider.dart';

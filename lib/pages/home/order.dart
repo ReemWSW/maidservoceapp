@@ -21,8 +21,9 @@ class OrderPage extends StatefulWidget {
 }
 
 class _OrderPageState extends State<OrderPage> {
-  TextEditingController _timeController = TextEditingController();
-  TextEditingController _dateController = TextEditingController();
+  final TextEditingController _timeController = TextEditingController();
+  final TextEditingController _dateController = TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
 
   DateTime _selectedDate = DateTime.now();
 
@@ -95,9 +96,13 @@ class _OrderPageState extends State<OrderPage> {
             builder: (_) => const AddressPage(),
           ),
         );
+        setState(() {
+          _addressController.text = _address!;
+        });
       },
       hintText: 'ที่อยู่',
       icon: Icons.location_on,
+      controller: _addressController,
       validator: addressValidate,
       onSaved: (value) => _address = value,
     );
