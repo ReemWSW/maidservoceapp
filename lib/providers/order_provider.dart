@@ -28,7 +28,7 @@ class OrderProvider with ChangeNotifier {
       "categoty": category,
       "type": typeSelected,
       "detail": detail,
-      "datetime": selectedDate,
+      "datetime": "$selectedDate",
     };
 
     Response response = await post(
