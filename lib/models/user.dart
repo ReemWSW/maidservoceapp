@@ -22,7 +22,7 @@ class User {
   });
 
   User.fromJson(Map<String, dynamic> json) {
-    userid = json['userid'];
+    userid = json['id'];
     image = json['image'];
     email = json['email'];
     name = json['name'];

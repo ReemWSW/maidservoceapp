@@ -49,7 +49,7 @@ class AuthProvider with ChangeNotifier {
 
       User authUser = User.fromJson(userData);
 
-      // UserPreferences().saveUser(authUser);
+      UserPreferences().saveUser(authUser);
 
       _loggedInStatus = Status.LoggedIn;
       notifyListeners();
