@@ -1,11 +1,18 @@
 import 'dart:convert';
 
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:maid/models/order.dart';
+import 'package:maid/models/user.dart';
+import 'package:maid/providers/order_provider.dart';
 import 'package:maid/utils/enum.dart';
+import 'package:maid/utils/sharepreferences/auth.dart';
+import 'package:maid/widget/bottombar.dart';
 import 'package:maid/widget/button_long.dart';
 import 'package:maid/widget/textfield_custom.dart';
+import 'package:provider/provider.dart';
 
 import 'address.dart';
 import 'detail_category.dart';
@@ -53,15 +60,40 @@ class _OrderPageState extends State<OrderPage> {
   }
 
   void submitOrder() {
+    OrderProvider order = Provider.of<OrderProvider>(context, listen: false);
+    Future<User> user = UserPreferences().getUser();
+    user.then((value) => print(value.email));
     final form = _formKey.currentState!;
-    if (form.validate()) {
-      // print("address: $_address");
-      // print("detail: $_detail");
-      // print("datetime: $_selectedDate");
-      // print("category: $_category");
-      // print("type: $_typeSelected");
-      form.save();
-    }
+    // if (form.validate()) {
+    //   form.save();
+    //   // order
+    //   //     .order(
+    //   //   address![0],
+    //   //   address![1],
+    //   //   address![2],
+    //   //   address![3],
+    //   //   _detail!,
+    //   //   _selectedDate,
+    //   //   _category!,
+    //   //   _typeSelected!,
+    //   // )
+    //   //     .then((response) {
+    //   //   if (response['status']) {
+    //   //     Order order = response['data'];
+    //   //     Navigator.push(
+    //   //       context,
+    //   //       MaterialPageRoute(builder: (context) => const HomePage()),
+    //   //     );
+    //   //   } else {
+    //   //     Flushbar(
+    //   //       title: "ไม่สามารถลงทะเบียนได้",
+    //   //       backgroundColor: Colors.red,
+    //   //       message: response['data'],
+    //   //       duration: const Duration(seconds: 5),
+    //   //     ).show(context);
+    //   //   }
+    //   // });
+    // }
   }
 
   @override
