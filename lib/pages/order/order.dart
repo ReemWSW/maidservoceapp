@@ -35,18 +35,18 @@ class _OrderPageState extends State<OrderPage> {
   String? addressValidate(String? value) =>
       value!.isEmpty ? 'กรุณาที่อยู่' : null;
 
-  String? _address, _detail, _time, _date, _category;
+  String? _address, _detail, _category;
   String? _typeSelected = null;
   int index = 0;
 
   List? data;
   List? filterData;
-  String? _head;
 
   Future<String> loadJsonData() async {
     var jsonText = await rootBundle.loadString('assets/json/select.json');
     setState(() {
       data = json.decode(jsonText);
+      filterData = data![index]["select"];
     });
     return 'success';
   }
@@ -55,9 +55,9 @@ class _OrderPageState extends State<OrderPage> {
     if (_formKey.currentState!.validate()) {
       print("address: $_address");
       print("detail: $_detail");
-      print("time: $_time");
-      print("date: $_date");
+      print("datetime: $_selectedDate");
       print("category: $_category");
+      print("type: $_typeSelected");
     }
   }
 
@@ -87,35 +87,6 @@ class _OrderPageState extends State<OrderPage> {
 
   @override
   Widget build(BuildContext context) {
-    final sizedBoxDate = SizedBox(
-      width: MediaQuery.of(context).size.width * .6,
-      child: TextFormField(
-        controller: _dateController,
-        decoration: const InputDecoration(
-            icon: Icon(Icons.calendar_today), labelText: "วันที่"),
-        validator: (value) =>
-            value!.isEmpty ? "กรุณาระบุวันที่ที่ต้องการ" : null,
-        readOnly: true,
-        onTap: () async {
-          await datePicker(context);
-        },
-      ),
-    );
-
-    final sizedBoxTime = SizedBox(
-      width: MediaQuery.of(context).size.width * .3,
-      child: TextFormField(
-        controller: _timeController,
-        decoration:
-            const InputDecoration(icon: Icon(Icons.timer), labelText: "เวลา"),
-        validator: (value) => value!.isEmpty ? "กรุณาระบุเวลาที่ต้องการ" : null,
-        readOnly: true,
-        onTap: () async {
-          await timePicker(context);
-        },
-      ),
-    );
-
     final addressTextfield = TextFieldCustom(
       hintText: 'ที่อยู่',
       icon: Icons.location_on,
@@ -139,11 +110,7 @@ class _OrderPageState extends State<OrderPage> {
     final detailTextfield = TextFieldCustom(
       hintText: 'รายละเอียดเพิ่มเติม',
       icon: Icons.details,
-      onChanged: (value) {
-        setState(() {
-          _detail = value;
-        });
-      },
+      onChanged: (value) => _detail = value,
     );
 
     return Scaffold(
@@ -187,8 +154,8 @@ class _OrderPageState extends State<OrderPage> {
                           label('เลือกวันที่ต้องการรับบริการ'),
                           Row(
                             children: [
-                              sizedBoxDate,
-                              sizedBoxTime,
+                              textfieldDatePicker(context),
+                              textfieldTimePicker(context),
                             ],
                           ),
                         ],
@@ -199,6 +166,87 @@ class _OrderPageState extends State<OrderPage> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget textfieldTimePicker(BuildContext context) {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width * .3,
+      child: TextFormField(
+        controller: _timeController,
+        decoration:
+            const InputDecoration(icon: Icon(Icons.timer), labelText: "เวลา"),
+        validator: (value) => value!.isEmpty ? "กรุณาระบุเวลาที่ต้องการ" : null,
+        readOnly: true,
+        onTap: () async {
+          TimeOfDay? pickedTime = await showTimePicker(
+              initialTime: TimeOfDay.now(),
+              context: context,
+              builder: (context, child) {
+                return MediaQuery(
+                    data: MediaQuery.of(context).copyWith(
+                        // Using 12-Hour format
+                        alwaysUse24HourFormat: true),
+                    // If you want 24-Hour format, just change alwaysUse24HourFormat to true
+                    child: child!);
+              });
+
+          if (pickedTime != null) {
+            DateTime parsedTime =
+                DateFormat.jm().parse(pickedTime.format(context).toString());
+            String formattedTime = DateFormat('HH:mm:ss').format(parsedTime);
+
+            setState(() {
+              _timeController.text =
+                  formattedTime; //set the value of text field.
+              _selectedDate = DateTime(
+                _selectedDate.year,
+                _selectedDate.month,
+                _selectedDate.day,
+                pickedTime.hour,
+                pickedTime.minute,
+              );
+            });
+          }
+        },
+      ),
+    );
+  }
+
+  Widget textfieldDatePicker(BuildContext context) {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width * .6,
+      child: TextFormField(
+        controller: _dateController,
+        decoration: const InputDecoration(
+            icon: Icon(Icons.calendar_today), labelText: "วันที่"),
+        validator: (value) =>
+            value!.isEmpty ? "กรุณาระบุวันที่ที่ต้องการ" : null,
+        readOnly: true,
+        onTap: () async {
+          DateTime? pickedDate = await showDatePicker(
+              context: context,
+              initialDate: DateTime.now(),
+              firstDate: DateTime(
+                  1800), //DateTime.now() - not to allow to choose before today.
+              lastDate: DateTime(2101));
+
+          if (pickedDate != null) {
+            String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
+            setState(() {
+              _dateController.text =
+                  formattedDate; //set output date to TextField value.
+              _selectedDate = DateTime(
+                pickedDate.year,
+                pickedDate.month,
+                pickedDate.day,
+              );
+            });
+          } else {
+            print("Date is not selected");
+          }
+        },
       ),
     );
   }
@@ -215,8 +263,10 @@ class _OrderPageState extends State<OrderPage> {
       ),
       validator: (value) => value == null ? "กรุณาเลือกรูปแบบที่ต้องการ" : null,
       value: _typeSelected,
-      onChanged: (String? newValue) {},
-      items: ['1', '2'].map((str) {
+      onChanged: (String? newValue) {
+        _typeSelected = newValue;
+      },
+      items: filterData!.map((str) {
         return DropdownMenuItem<String>(
           value: str,
           child: Text(
@@ -228,62 +278,7 @@ class _OrderPageState extends State<OrderPage> {
     );
   }
 
-  Future<void> datePicker(BuildContext context) async {
-    DateTime? pickedDate = await showDatePicker(
-        context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime(
-            1800), //DateTime.now() - not to allow to choose before today.
-        lastDate: DateTime(2101));
+  Future<void> datePicker(BuildContext context) async {}
 
-    if (pickedDate != null) {
-      String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
-      print(formattedDate);
-
-      setState(() {
-        _dateController.text =
-            formattedDate; //set output date to TextField value.
-        _selectedDate = DateTime(
-          pickedDate.year,
-          pickedDate.month,
-          pickedDate.day,
-        );
-      });
-    } else {
-      print("Date is not selected");
-    }
-  }
-
-  Future<void> timePicker(BuildContext context) async {
-    TimeOfDay? pickedTime = await showTimePicker(
-        initialTime: TimeOfDay.now(),
-        context: context,
-        builder: (context, child) {
-          return MediaQuery(
-              data: MediaQuery.of(context).copyWith(
-                  // Using 12-Hour format
-                  alwaysUse24HourFormat: true),
-              // If you want 24-Hour format, just change alwaysUse24HourFormat to true
-              child: child!);
-        });
-
-    if (pickedTime != null) {
-      DateTime parsedTime =
-          DateFormat.jm().parse(pickedTime.format(context).toString());
-      String formattedTime = DateFormat('HH:mm:ss').format(parsedTime);
-
-      setState(() {
-        _timeController.text = formattedTime; //set the value of text field.
-        _selectedDate = DateTime(
-          _selectedDate.year,
-          _selectedDate.month,
-          _selectedDate.day,
-          pickedTime.hour,
-          pickedTime.minute,
-        );
-      });
-    } else {
-      print("Time is not selected");
-    }
-  }
+  Future<void> timePicker(BuildContext context) async {}
 }
