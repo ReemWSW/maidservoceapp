@@ -1,11 +1,15 @@
-import 'package:another_flushbar/flushbar.dart';
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:another_flushbar/flushbar.dart';
+import 'package:provider/provider.dart';
 import 'package:maid/models/user.dart';
-import 'package:maid/pages/login/login.dart';
 import 'package:maid/providers/auth.dart';
+import 'package:maid/pages/login/login.dart';
 import 'package:maid/widget/button_long.dart';
 import 'package:maid/widget/textfield_custom.dart';
-import 'package:provider/provider.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -36,8 +40,7 @@ class _RegisterPageState extends State<RegisterPage> {
   String? phoneValidate(String? value) =>
       value!.isEmpty ? 'กรุณาระบุชื่อนาทสกุล' : null;
 
-  String? _name, _email, _password, _phone;
-  String _image64 = ' ';
+  String? _name, _email, _password, _phone, _image64 = '';
 
   void submitRegister() {
     AuthProvider auth = Provider.of<AuthProvider>(context, listen: false);
@@ -46,7 +49,7 @@ class _RegisterPageState extends State<RegisterPage> {
       form.save();
       auth
           .register(
-        _image64,
+        _image64!,
         _name!,
         _email!,
         _password!,
@@ -75,6 +78,30 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     AuthProvider auth = Provider.of<AuthProvider>(context, listen: false);
 
+    final imageContainer = Center(
+      child: InkWell(
+        child: Container(
+          child: _image64 == ''
+              ? const Icon(
+                  Icons.account_circle_rounded,
+                  color: Colors.grey,
+                  size: 50,
+                )
+              // : SizedBox(),
+              : Image.memory(base64Decode(_image64!)),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(color: Colors.grey),
+          ),
+          width: 200,
+          height: 200,
+        ),
+        onTap: () {
+          selectPhoto(context);
+        },
+      ),
+    );
+
     var loading = Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: const <Widget>[
@@ -98,7 +125,7 @@ class _RegisterPageState extends State<RegisterPage> {
             children: [
               Column(
                 children: [
-                  imageButton(),
+                  imageContainer,
                   const SizedBox(height: 15),
                   TextFieldCustom(
                     hintText: 'ชื่อ นามสกุล',
@@ -146,24 +173,52 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-  InkWell imageButton() {
-    return InkWell(
-      child: Container(
-        width: 200,
-        height: 200,
-        decoration: BoxDecoration(
-          color: Colors.grey.shade200,
-          borderRadius: BorderRadius.circular(8),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.6),
-              spreadRadius: 2,
-              blurRadius: 10,
+  Future<dynamic> selectPhoto(BuildContext context) {
+    return showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Wrap(
+          children: [
+            InkWell(
+              child: const ListTile(
+                leading: Icon(Icons.camera),
+                title: Text('กล้องถ่ายรูป'),
+              ),
+              onTap: () => _getFromGallery(ImageSource.camera),
+            ),
+            InkWell(
+              child: const ListTile(
+                leading: Icon(Icons.photo),
+                title: Text('อัลบั้ม'),
+              ),
+              onTap: () => _getFromGallery(ImageSource.gallery),
             ),
           ],
-        ),
-        child: const Icon(Icons.photo),
-      ),
+        );
+      },
     );
+  }
+
+  _getFromGallery(ImageSource source) async {
+    var imagePick = await ImagePicker().getImage(
+      source: source,
+      maxWidth: 500,
+      maxHeight: 500,
+      imageQuality: 25,
+    );
+    if (imagePick != null) {
+      try {
+        final bytes = File(imagePick.path).readAsBytesSync();
+        setState(() {
+          _image64 = base64Encode(bytes);
+        });
+      } catch (e) {
+        Flushbar(
+          title: "เพิ่มรูปภาพไม่สำเร็จ",
+          backgroundColor: Colors.red,
+          duration: const Duration(seconds: 5),
+        ).show(context);
+      }
+    }
   }
 }
