@@ -41,6 +41,7 @@ class _OrderPageState extends State<OrderPage> {
 
   List? data;
   List? filterData;
+  List? address;
 
   Future<String> loadJsonData() async {
     var jsonText = await rootBundle.loadString('assets/json/select.json');
@@ -52,12 +53,14 @@ class _OrderPageState extends State<OrderPage> {
   }
 
   void submitOrder() {
-    if (_formKey.currentState!.validate()) {
-      print("address: $_address");
-      print("detail: $_detail");
-      print("datetime: $_selectedDate");
-      print("category: $_category");
-      print("type: $_typeSelected");
+    final form = _formKey.currentState!;
+    if (form.validate()) {
+      // print("address: $_address");
+      // print("detail: $_detail");
+      // print("datetime: $_selectedDate");
+      // print("category: $_category");
+      // print("type: $_typeSelected");
+      form.save();
     }
   }
 
@@ -95,14 +98,15 @@ class _OrderPageState extends State<OrderPage> {
       onSaved: (value) => _address = value,
       readOnly: true,
       onTap: () async {
-        _address = await Navigator.push(
+        address = await Navigator.push(
           context,
           MaterialPageRoute(
             builder: (_) => const AddressPage(),
           ),
         );
         setState(() {
-          _addressController.text = _address!;
+          _addressController.text =
+              "${address![0]}  ${address![1]} ${address![2]} ${address![3]}";
         });
       },
     );

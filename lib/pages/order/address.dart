@@ -142,7 +142,12 @@ class _AddressPageState extends State<AddressPage> {
                 if (_formKey.currentState!.validate()) {
                   // print("$_detail $_tombon  $_amphure $_province");
                   var address = "$_detail $_tombon  $_amphure $_province";
-                  Navigator.pop(context, address);
+                  Navigator.pop(context, [
+                    _detail,
+                    _tombon,
+                    _amphure,
+                    _province,
+                  ]);
                 }
               },
             ),
