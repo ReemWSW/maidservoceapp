@@ -17,12 +17,11 @@ class ListPage extends StatefulWidget {
 class _ListPageState extends State<ListPage> {
   List<String> name = ['รายการปัจจุบัน', 'รายการที่ผ่าน', 'รีวิว'];
 
-
   @override
   void initState() {
     super.initState();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -36,20 +35,19 @@ class _ListPageState extends State<ListPage> {
                 IconButton(onPressed: () {}, icon: const Icon(Icons.refresh))
               ],
               bottom: TabBar(
-                labelColor: Colors.green,
-                unselectedLabelColor: Colors.white,
-                indicatorSize: TabBarIndicatorSize.label,
-                indicator: const BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(10),
-                        topRight: Radius.circular(10)),
-                    color: Colors.white),
-                tabs: name
-                    .map((label) => Tab(
-                        child: Align(
-                            alignment: Alignment.center, child: Text(label))))
-                    .toList(),
-              ),
+                  labelColor: Colors.green,
+                  unselectedLabelColor: Colors.white,
+                  indicatorSize: TabBarIndicatorSize.label,
+                  indicator: const BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(10),
+                          topRight: Radius.circular(10)),
+                      color: Colors.white),
+                  tabs: name
+                      .map((label) => Tab(
+                          child: Align(
+                              alignment: Alignment.center, child: Text(label))))
+                      .toList()),
             ),
             body: Consumer<OrderProvider>(
               builder: (context, order, child) {
