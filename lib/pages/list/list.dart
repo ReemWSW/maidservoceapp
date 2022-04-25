@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
-class ListPage extends StatelessWidget {
-  ListPage({
+class ListPage extends StatefulWidget {
+  const ListPage({
     Key? key,
   }) : super(key: key);
+
+  @override
+  State<ListPage> createState() => _ListPageState();
+}
+
+class _ListPageState extends State<ListPage> {
   List<String> name = ['รายการปัจจุบัน', 'รายการที่ผ่าน', 'รีวิว'];
 
   @override
@@ -32,13 +39,38 @@ class ListPage extends StatelessWidget {
                       child: Align(
                           alignment: Alignment.center, child: Text(label))))
                   .toList(),
-             
             ),
           ),
-          body: const TabBarView(children: [
-            Icon(Icons.apps),
-            Icon(Icons.movie),
-            Icon(Icons.games),
+          body: TabBarView(children: [
+            // Icon(Icons.apps),
+            ListView.builder(
+              itemCount: 3,
+              itemBuilder: (BuildContext context, int index) {
+                return Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  margin: const EdgeInsets.all(10),
+                  child: ListTile(
+                    leading: const CircleAvatar(
+                      child: Icon(Icons.people),
+                    ),
+                    title: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: const [
+                        Text("{order[index]['customer']['name']}"),
+                        Text("{order[index]['customer']['phone']}"),
+                      ],
+                    ),
+                    subtitle: const Text('DateFormat'),
+                    isThreeLine: true,
+                  ),
+                );
+              },
+            ),
+            const Icon(Icons.movie),
+            const Icon(Icons.games),
           ]),
         ));
   }
