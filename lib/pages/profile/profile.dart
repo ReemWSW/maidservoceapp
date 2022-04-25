@@ -15,6 +15,17 @@ class ProfilePage extends StatelessWidget {
 
   String? _image, _name, _phone, _email;
 
+  void logout(BuildContext context) {
+    Provider.of<AuthProvider>(context, listen: false).logout();
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(
+        builder: (BuildContext context) => const LoginPage(),
+      ),
+      (route) => false,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     UserPreferences().getUser().then((user) {
@@ -46,19 +57,7 @@ class ProfilePage extends StatelessWidget {
                           widget: ElevatedButton(
                               style:
                                   ElevatedButton.styleFrom(primary: Colors.red),
-                              onPressed: () {
-                                Provider.of<AuthProvider>(context,
-                                        listen: false)
-                                    .logout();
-                                Navigator.pushAndRemoveUntil(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        const LoginPage(),
-                                  ),
-                                  (route) => false,
-                                );
-                              },
+                              onPressed: () => logout(context),
                               child: const Text('ออกจากระบบ'))),
                     ],
                   )
