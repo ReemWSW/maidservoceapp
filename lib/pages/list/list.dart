@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:maid/providers/order_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -18,6 +17,12 @@ class ListPage extends StatefulWidget {
 class _ListPageState extends State<ListPage> {
   List<String> name = ['รายการปัจจุบัน', 'รายการที่ผ่าน', 'รีวิว'];
 
+
+  @override
+  void initState() {
+    super.initState();
+  }
+  
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -59,12 +64,6 @@ class _ListPageState extends State<ListPage> {
                   ],
                 );
               },
-            )
-            // TabBarView(children: [
-            //   ListOrder(),
-            //   const Icon(Icons.movie),
-            //   const Icon(Icons.games),
-            // ]),
-            ));
+            )));
   }
 }
