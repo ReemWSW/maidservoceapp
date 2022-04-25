@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:maid/models/order.dart';
-import 'package:maid/models/user.dart';
 import 'package:maid/providers/order_provider.dart';
 import 'package:maid/utils/enum.dart';
 import 'package:maid/utils/sharepreferences/auth.dart';
@@ -67,9 +66,6 @@ class _OrderPageState extends State<OrderPage> {
       _customerImage64 = value.image;
       _customerName = value.name;
       _customePhone = value.phone;
-      print(_customerImage64);
-      print(_customerName);
-      print(_customePhone);
     });
     final form = _formKey.currentState!;
     if (form.validate()) {

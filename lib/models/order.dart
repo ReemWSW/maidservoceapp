@@ -6,15 +6,18 @@ class Order {
   String? type;
   String? detail;
   DateTime? datetime;
+  EnumOrder? status;
 
-  Order(
-      {this.customer,
-      this.maid,
-      this.address,
-      this.categoty,
-      this.type,
-      this.detail,
-      this.datetime});
+  Order({
+    this.customer,
+    this.maid,
+    this.address,
+    this.categoty,
+    this.type,
+    this.detail,
+    this.datetime,
+    this.status,
+  });
 
   Order.fromJson(Map<String, dynamic> json) {
     customer =
@@ -26,6 +29,7 @@ class Order {
     type = json['type'];
     detail = json['detail'];
     datetime = DateTime.tryParse(json['datetime']);
+    detail = json['status'];
   }
 
   Map<String, dynamic> toJson() {
@@ -43,6 +47,7 @@ class Order {
     data['type'] = type;
     data['detail'] = detail;
     data['datetime'] = datetime;
+    data['status'] = status;
     return data;
   }
 }
@@ -92,4 +97,10 @@ class Address {
     data['province'] = province;
     return data;
   }
+}
+
+enum EnumOrder {
+  WAIT,
+  ACCEPT,
+  SUCCESS,
 }
