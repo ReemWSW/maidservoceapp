@@ -1,3 +1,4 @@
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:flutter/services.dart';
@@ -66,6 +67,7 @@ class _AddressPageState extends State<AddressPage> {
       readOnly: true,
       controller: _amphureController,
       validator: amphureValidate,
+      enabled: _resultProvince == null ? false : true,
       onTap: () async {
         _resultAmphure = await Navigator.push(
             context,
@@ -73,7 +75,6 @@ class _AddressPageState extends State<AddressPage> {
                 builder: (_) =>
                     AmphureListScreen(idpass: _resultProvince![1])));
         _amphure = _resultAmphure![0];
-        print(_resultAmphure);
         setState(() {
           _amphureController.text = _amphure!;
         });
@@ -82,6 +83,7 @@ class _AddressPageState extends State<AddressPage> {
 
     var textFieldTombon = TextFieldCustom(
       hintText: "แขวง/ตำบล",
+      enabled: _resultAmphure == null ? false : true,
       readOnly: true,
       controller: _tombonController,
       validator: tombonValidate,
@@ -99,6 +101,7 @@ class _AddressPageState extends State<AddressPage> {
 
     var textFieldDetail = TextFieldCustom(
       hintText: "รายละเอียดที่อยู่",
+      enabled: _resultTombon == null ? false : true,
       onChanged: (value) => _detail = value,
       validator: detailValidate,
     );
