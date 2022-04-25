@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
 import 'package:maid/models/user.dart';
 import 'package:maid/utils/app_url.dart';
+import 'package:maid/utils/sharepreferences/auth.dart';
 
 class UserProvider with ChangeNotifier {
   User _user = User();
@@ -16,57 +17,46 @@ class UserProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  // void getUser(String name) async {
-  //   var result;
-  //   Response response = await post(
-  //     Uri.parse(AppUrl.baseURL + AppUrl.getUser),
-  //     body: json.encode({"name": name}),
-  //     headers: {'Content-Type': 'application/json'},
-  //   );
-  //   final Map<String, dynamic> responseData = json.decode(response.body);
-  //   if (response.statusCode == 200) {
-  //     result = {
-  //       'status': true,
-  //       'message': responseData['message'],
-  //     };
-  //   } else {
-  //     result = {
-  //       'status': false,
-  //       'message': responseData['message'],
-  //     };
-  //   }
-  //   notifyListeners();
-  // }
+  void setPostMaid() {
+    _user.maid = true;
+    notifyListeners();
+    UserPreferences().setMaid(true);
+  }
 
-  // Future<Map<String, dynamic>> setMaid(String id) async {
-  //   var result;
+  Future<Map<String, dynamic>> setMaid(String? id) async {
+    final Map<String, dynamic> registrationData = {
+      'id': id,
+    };
 
-  //   Response response = await post(
-  //     Uri.parse(AppUrl.baseURL + AppUrl.maidSet),
-  //     body: json.encode({"id": id}),
-  //     headers: {'Content-Type': 'application/json'},
-  //   );
+    var result;
 
-  //   final Map<String, dynamic> responseData = json.decode(response.body);
-  //   if (response.statusCode == 200) {
-  //     var userData = responseData['data'];
+    Response response = await post(
+      Uri.parse(AppUrl.setMaid),
+      body: json.encode({"id": id}),
+      headers: {'Content-Type': 'application/json'},
+    );
 
-  //     _user.maid = true;
-  //     notifyListeners();
 
-  //     print('this is user  ${_user.maid}');
-  //     result = {
-  //       'status': true,
-  //       'message': responseData['message'],
-  //       'user': responseData['data']
-  //     };
-  //   } else {
-  //     result = {
-  //       'status': false,
-  //       'message': responseData['message'],
-  //     };
-  //   }
+    final Map<String, dynamic> responseData = json.decode(response.body);
+    if (response.statusCode == 200) {
+      var userData = responseData['data'];
 
-  //   return result;
-  // }
+      UserPreferences().setMaid(true);
+      _user.maid = true;
+      notifyListeners();
+
+      result = {
+        'status': true,
+        'message': responseData['message'],
+        'user': responseData['data']
+      };
+    } else {
+      result = {
+        'status': false,
+        'message': responseData['message'],
+      };
+    }
+
+    return result;
+  }
 }
