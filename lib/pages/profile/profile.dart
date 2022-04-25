@@ -1,6 +1,9 @@
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
+import 'package:maid/pages/login/login.dart';
+import 'package:maid/providers/auth.dart';
 import 'package:maid/utils/sharepreferences/auth.dart';
+import 'package:provider/provider.dart';
 
 import 'widgets/container_image.dart';
 import 'widgets/row_text.dart';
@@ -43,7 +46,19 @@ class ProfilePage extends StatelessWidget {
                           widget: ElevatedButton(
                               style:
                                   ElevatedButton.styleFrom(primary: Colors.red),
-                              onPressed: () {},
+                              onPressed: () {
+                                Provider.of<AuthProvider>(context,
+                                        listen: false)
+                                    .logout();
+                                Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        const LoginPage(),
+                                  ),
+                                  (route) => false,
+                                );
+                              },
                               child: const Text('ออกจากระบบ'))),
                     ],
                   )
