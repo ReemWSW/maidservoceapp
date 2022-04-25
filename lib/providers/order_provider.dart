@@ -48,6 +48,7 @@ class OrderProvider with ChangeNotifier {
       "type": typeSelected,
       "detail": detail,
       "datetime": "$selectedDate",
+      "status": "${EnumOrder.WAIT}",
     };
 
     _loadingOrderStatus = StatusOrder.LOADING;
