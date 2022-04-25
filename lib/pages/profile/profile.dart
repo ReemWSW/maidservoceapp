@@ -1,3 +1,4 @@
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:maid/utils/sharepreferences/auth.dart';
 
@@ -24,9 +25,20 @@ class ProfilePage extends StatelessWidget {
       child: Column(
         children: [
           ContainerImage(image: _image),
-          RowText(label: 'ชื่อ', text: '$_name'),
-          RowText(label: 'อีเมลล์', text: '$_email'),
-          RowText(label: 'เบอร์โทรศัพท์', text: '$_phone'),
+          RowText(label: 'ชื่อ', widget: Text('$_name')),
+          RowText(label: 'อีเมลล์', widget: Text('$_email')),
+          RowText(label: 'เบอร์โทรศัพท์', widget: Text('$_phone')),
+          RowText(
+              label: 'สถานะ',
+              widget: ElevatedButton(
+                  onPressed: () {},
+                  child: const Text('ลงทะเบียนแม่บ้านที่นี่'))),
+          RowText(
+              label: '',
+              widget: ElevatedButton(
+                  style: ElevatedButton.styleFrom(primary: Colors.red),
+                  onPressed: () {},
+                  child: const Text('ออกจากระบบ'))),
         ],
       ),
     );
