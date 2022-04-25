@@ -7,4 +7,6 @@ class AppUrl {
   static const String register = baseURL + "/register";
 
   static const String orderPost = baseURL + "/order";
+
+  static const String setMaid = baseURL + "/setmaid";
 }
