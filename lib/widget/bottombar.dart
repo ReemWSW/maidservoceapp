@@ -26,7 +26,7 @@ class _HomePageState extends State<HomePage> {
     const Home(),
     const ListPage(),
     const MyWorkPage(),
-    const ProfilePage(),
+    ProfilePage(),
   ];
 
   void _onItemTapped(int index) {
