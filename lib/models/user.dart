@@ -1,7 +1,7 @@
 // ignore_for_file: file_names
 
 class User {
-  String? userid;
+  String? id;
   String? image;
   String? email;
   String? name;
@@ -11,7 +11,7 @@ class User {
   String? token;
 
   User({
-    this.userid,
+    this.id,
     this.image,
     this.email,
     this.name,
@@ -22,7 +22,7 @@ class User {
   });
 
   User.fromJson(Map<String, dynamic> json) {
-    userid = json['id'];
+    id = json['id'];
     image = json['image'];
     email = json['email'];
     name = json['name'];
@@ -34,7 +34,7 @@ class User {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['userid'] = userid;
+    data['id'] = id;
     data['image'] = image;
     data['email'] = email;
     data['name'] = name;
