@@ -61,12 +61,15 @@ class _OrderPageState extends State<OrderPage> {
     return 'success';
   }
 
-  void submitOrder() {
+  void submitOrder() async {
     OrderProvider order = Provider.of<OrderProvider>(context, listen: false);
-    UserPreferences().getUser().then((value) {
+    await UserPreferences().getUser().then((value) {
       _customerImage64 = value.image;
       _customerName = value.name;
       _customePhone = value.phone;
+      print(_customerImage64);
+      print(_customerName);
+      print(_customePhone);
     });
     final form = _formKey.currentState!;
     if (form.validate()) {
@@ -80,7 +83,7 @@ class _OrderPageState extends State<OrderPage> {
         address![1],
         address![2],
         address![3],
-        _detail!,
+        _detail ?? "-",
         _selectedDate,
         _category!,
         _typeSelected!,
@@ -130,32 +133,32 @@ class _OrderPageState extends State<OrderPage> {
 
   @override
   Widget build(BuildContext context) {
+    OrderProvider order = Provider.of<OrderProvider>(context, listen: false);
+
     final addressTextfield = TextFieldCustom(
-      hintText: 'ที่อยู่',
-      icon: Icons.location_on,
-      controller: _addressController,
-      validator: addressValidate,
-      onSaved: (value) => _address = value,
-      readOnly: true,
-      onTap: () async {
-        address = await Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (_) => const AddressPage(),
-          ),
-        );
-        setState(() {
-          _addressController.text =
-              "${address![0]}  ${address![1]} ${address![2]} ${address![3]}";
+        hintText: 'ที่อยู่',
+        icon: Icons.location_on,
+        controller: _addressController,
+        validator: addressValidate,
+        onSaved: (value) => _address = value,
+        readOnly: true,
+        onTap: () async {
+          address = await Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => const AddressPage(),
+            ),
+          );
+          setState(() {
+            _addressController.text =
+                "${address![0]}  ${address![1]} ${address![2]} ${address![3]}";
+          });
         });
-      },
-    );
 
     final detailTextfield = TextFieldCustom(
-      hintText: 'รายละเอียดเพิ่มเติม',
-      icon: Icons.details,
-      onChanged: (value) => _detail = value,
-    );
+        hintText: 'รายละเอียดเพิ่มเติม',
+        icon: Icons.details,
+        onChanged: (value) => _detail = value);
 
     var iconDetail = IconButton(
         onPressed: () {
@@ -165,6 +168,13 @@ class _OrderPageState extends State<OrderPage> {
                   builder: (_) => DetailCategoryPage(index: index)));
         },
         icon: const Icon(Icons.info));
+
+    var loading = Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: const <Widget>[
+          CircularProgressIndicator(),
+          Text("กรุณารอสักครู่")
+        ]);
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -206,7 +216,9 @@ class _OrderPageState extends State<OrderPage> {
                       )
                     : const CircularProgressIndicator(),
               ),
-              ButtonLong(label: 'บันทึก', onPressed: submitOrder)
+              order.loadingOrderStatus == StatusOrder.LOADING
+                  ? loading
+                  : ButtonLong(label: 'บันทึก', onPressed: submitOrder)
             ],
           ),
         ),

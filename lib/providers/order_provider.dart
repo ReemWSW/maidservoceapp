@@ -5,7 +5,18 @@ import 'package:http/http.dart';
 import 'package:maid/models/order.dart';
 import 'package:maid/utils/app_url.dart';
 
+enum StatusOrder {
+  IDLE,
+  LOADING,
+  SUCCESS,
+  FAIL,
+}
+
 class OrderProvider with ChangeNotifier {
+  StatusOrder _loadingOrderStatus = StatusOrder.IDLE;
+
+  StatusOrder get loadingOrderStatus => _loadingOrderStatus;
+
   Future<Map<String, dynamic>> order(
     String customerImage,
     String customerName,
@@ -39,6 +50,9 @@ class OrderProvider with ChangeNotifier {
       "datetime": "$selectedDate",
     };
 
+    _loadingOrderStatus = StatusOrder.LOADING;
+    notifyListeners();
+
     Response response = await post(
       Uri.parse(AppUrl.orderPost),
       body: json.encode(orderData),
@@ -47,12 +61,16 @@ class OrderProvider with ChangeNotifier {
 
     final Map<String, dynamic> responseData = json.decode(response.body);
     if (response.statusCode == 200) {
-      var userData = responseData['data'];
+      var orderData = responseData['data'];
 
-      Order authUser = Order.fromJson(userData);
+      Order order = Order.fromJson(orderData);
+      result = {'status': true, 'message': 'Successful', 'user': order};
 
-      result = {'status': true, 'message': 'Successful', 'user': authUser};
+      _loadingOrderStatus = StatusOrder.SUCCESS;
+      notifyListeners();
     } else {
+      _loadingOrderStatus = StatusOrder.FAIL;
+      notifyListeners();
       result = {
         'status': false,
         'message': responseData['message'],
