@@ -79,4 +79,44 @@ class OrderProvider with ChangeNotifier {
     }
     return result;
   }
+
+  Future<Map<String, dynamic>> getorder(
+    String addressAmphure,
+    String addressProvince,
+  ) async {
+    var result;
+
+    final Map<String, dynamic> orderData = {
+      "amphure": addressAmphure,
+      "province": addressProvince
+    };
+
+    _loadingOrderStatus = StatusOrder.LOADING;
+    notifyListeners();
+
+    Response response = await post(
+      Uri.parse(AppUrl.getorder),
+      body: json.encode(orderData),
+      headers: {'Content-Type': 'application/json'},
+    );
+
+    final Map<String, dynamic> responseData = json.decode(response.body);
+    if (response.statusCode == 200) {
+      var orderData = responseData['data'];
+
+      Order order = Order.fromJson(orderData);
+      result = {'status': true, 'message': 'Successful', 'user': order};
+
+      _loadingOrderStatus = StatusOrder.SUCCESS;
+      notifyListeners();
+    } else {
+      _loadingOrderStatus = StatusOrder.FAIL;
+      notifyListeners();
+      result = {
+        'status': false,
+        'message': responseData['message'],
+      };
+    }
+    return result;
+  }
 }
