@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 class RowText extends StatelessWidget {
   const RowText({
     Key? key,
-    required String this.text,
     required String this.label,
+    required Widget this.widget,
   }) : super(key: key);
 
-  final String? text;
   final String? label;
+  final Widget? widget;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class RowText extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text('$label'),
-          Text('$text'),
+          widget!,
         ],
       ),
     );
