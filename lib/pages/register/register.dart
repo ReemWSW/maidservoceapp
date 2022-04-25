@@ -45,6 +45,9 @@ class _RegisterPageState extends State<RegisterPage> {
   void submitRegister() {
     AuthProvider auth = Provider.of<AuthProvider>(context, listen: false);
     final form = _formKey.currentState!;
+    if (_image64! == '') {
+      _image64 = '-';
+    }
     if (form.validate()) {
       form.save();
       auth
