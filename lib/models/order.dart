@@ -25,7 +25,7 @@ class Order {
     categoty = json['categoty'];
     type = json['type'];
     detail = json['detail'];
-    datetime = json['datetime'];
+    datetime = DateTime.tryParse(json['datetime']);
   }
 
   Map<String, dynamic> toJson() {
