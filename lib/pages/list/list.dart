@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:maid/providers/order_provider.dart';
+import 'package:provider/provider.dart';
+
+import 'widgets/list_order.dart';
+import 'widgets/review.dart';
 
 class ListPage extends StatefulWidget {
   const ListPage({
@@ -18,60 +23,48 @@ class _ListPageState extends State<ListPage> {
     return DefaultTabController(
         length: 3,
         child: Scaffold(
-          appBar: AppBar(
-            automaticallyImplyLeading: false,
-            backgroundColor: Colors.green,
-            elevation: 0,
-            actions: [
-              IconButton(onPressed: () {}, icon: const Icon(Icons.refresh))
-            ],
-            bottom: TabBar(
-              labelColor: Colors.green,
-              unselectedLabelColor: Colors.white,
-              indicatorSize: TabBarIndicatorSize.label,
-              indicator: const BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(10),
-                      topRight: Radius.circular(10)),
-                  color: Colors.white),
-              tabs: name
-                  .map((label) => Tab(
-                      child: Align(
-                          alignment: Alignment.center, child: Text(label))))
-                  .toList(),
+            appBar: AppBar(
+              automaticallyImplyLeading: false,
+              backgroundColor: Colors.green,
+              elevation: 0,
+              actions: [
+                IconButton(onPressed: () {}, icon: const Icon(Icons.refresh))
+              ],
+              bottom: TabBar(
+                labelColor: Colors.green,
+                unselectedLabelColor: Colors.white,
+                indicatorSize: TabBarIndicatorSize.label,
+                indicator: const BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(10),
+                        topRight: Radius.circular(10)),
+                    color: Colors.white),
+                tabs: name
+                    .map((label) => Tab(
+                        child: Align(
+                            alignment: Alignment.center, child: Text(label))))
+                    .toList(),
+              ),
             ),
-          ),
-          body: TabBarView(children: [
-            // Icon(Icons.apps),
-            ListView.builder(
-              itemCount: 3,
-              itemBuilder: (BuildContext context, int index) {
-                return Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  margin: const EdgeInsets.all(10),
-                  child: ListTile(
-                    leading: const CircleAvatar(
-                      child: Icon(Icons.people),
-                    ),
-                    title: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
-                        Text("{order[index]['customer']['name']}"),
-                        Text("{order[index]['customer']['phone']}"),
-                      ],
-                    ),
-                    subtitle: const Text('DateFormat'),
-                    isThreeLine: true,
-                  ),
+            body: Consumer<OrderProvider>(
+              builder: (context, order, child) {
+                return const TabBarView(
+                  children: <Widget>[
+                    ListOrder(booking: true),
+                    ListOrder(booking: false),
+                    ReviewWidget()
+                    // currentItem(true, order.waitOrder!)
+                    // currentItem(false, order.acceptOrder!)
+                    // reviewOrder(order.successOrder!)
+                  ],
                 );
               },
-            ),
-            const Icon(Icons.movie),
-            const Icon(Icons.games),
-          ]),
-        ));
+            )
+            // TabBarView(children: [
+            //   ListOrder(),
+            //   const Icon(Icons.movie),
+            //   const Icon(Icons.games),
+            // ]),
+            ));
   }
 }
