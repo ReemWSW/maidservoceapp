@@ -20,27 +20,35 @@ class ProfilePage extends StatelessWidget {
       _phone = user.phone;
       _email = user.email;
     });
+
     return Container(
       margin: const EdgeInsets.all(16),
-      child: Column(
-        children: [
-          ContainerImage(image: _image),
-          RowText(label: 'ชื่อ', widget: Text('$_name')),
-          RowText(label: 'อีเมลล์', widget: Text('$_email')),
-          RowText(label: 'เบอร์โทรศัพท์', widget: Text('$_phone')),
-          RowText(
-              label: 'สถานะ',
-              widget: ElevatedButton(
-                  onPressed: () {},
-                  child: const Text('ลงทะเบียนแม่บ้านที่นี่'))),
-          RowText(
-              label: '',
-              widget: ElevatedButton(
-                  style: ElevatedButton.styleFrom(primary: Colors.red),
-                  onPressed: () {},
-                  child: const Text('ออกจากระบบ'))),
-        ],
-      ),
+      child: FutureBuilder(
+          future: UserPreferences().getUser(),
+          builder: (context, snapshot) {
+            return snapshot.hasData
+                ? Column(
+                    children: [
+                      ContainerImage(image: _image),
+                      RowText(label: 'ชื่อ', widget: Text('$_name')),
+                      RowText(label: 'อีเมลล์', widget: Text('$_email')),
+                      RowText(label: 'เบอร์โทรศัพท์', widget: Text('$_phone')),
+                      RowText(
+                          label: 'สถานะ',
+                          widget: ElevatedButton(
+                              onPressed: () {},
+                              child: const Text('ลงทะเบียนแม่บ้านที่นี่'))),
+                      RowText(
+                          label: '',
+                          widget: ElevatedButton(
+                              style:
+                                  ElevatedButton.styleFrom(primary: Colors.red),
+                              onPressed: () {},
+                              child: const Text('ออกจากระบบ'))),
+                    ],
+                  )
+                : const CircularProgressIndicator();
+          }),
     );
   }
 }
