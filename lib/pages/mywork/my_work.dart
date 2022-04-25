@@ -11,6 +11,7 @@ class MyWorkPage extends StatelessWidget {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           backgroundColor: Colors.green,
           elevation: 0,
           bottom: const TabBar(

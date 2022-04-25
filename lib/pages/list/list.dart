@@ -11,6 +11,7 @@ class ListPage extends StatelessWidget {
         length: 3,
         child: Scaffold(
           appBar: AppBar(
+            automaticallyImplyLeading: false,
             backgroundColor: Colors.green,
             elevation: 0,
             bottom: const TabBar(
