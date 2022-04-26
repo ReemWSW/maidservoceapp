@@ -103,7 +103,7 @@ class OrderProvider with ChangeNotifier {
       var orderData = responseData['data'];
 
       Order order = Order.fromJson(orderData);
-      result = {'status': true, 'message': 'Successful', 'user': order};
+      result = {'status': true, 'message': 'Successful', 'orders': order};
 
       _loadingOrderStatus = StatusOrder.SUCCESS;
       notifyListeners();
