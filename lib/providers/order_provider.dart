@@ -173,4 +173,43 @@ class OrderProvider with ChangeNotifier {
     }
     notifyListeners();
   }
+
+  Future setScoreOrder(String order, int score) async {
+    final Map<String, dynamic> orderData = {
+      'order': order,
+      'score': score,
+    };
+
+    var uri = AppUrl.setScoreOrder;
+    // print(uri);
+    Response response = await post(
+      Uri.parse(uri),
+      body: json.encode(orderData),
+      headers: {'Content-Type': 'application/json'},
+    );
+    // print(response.body);
+
+    final Map<String, dynamic> responseData = json.decode(response.body);
+    var result;
+    if (response.statusCode == 200) {
+      var orderData = responseData['data'];
+      for (var item in successOrder!) {
+        if (item["_id"] == orderData["_id"]) {
+          item["score"] = orderData["score"];
+          notifyListeners();
+        }
+      }
+
+      result = {
+        'status': true,
+        'message': responseData['message'],
+        'order': orderData
+      };
+    } else {
+      result = {
+        'status': false,
+        'message': responseData['message'],
+      };
+    }
+  }
 }
