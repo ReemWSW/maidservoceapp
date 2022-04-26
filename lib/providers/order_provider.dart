@@ -14,6 +14,10 @@ enum StatusOrder {
 
 class OrderProvider with ChangeNotifier {
   StatusOrder _loadingOrderStatus = StatusOrder.IDLE;
+  List<dynamic>? waitOrder;
+  List<dynamic>? acceptOrder;
+  List<dynamic>? successOrder;
+  List<dynamic>? customer;
 
   StatusOrder get loadingOrderStatus => _loadingOrderStatus;
 
@@ -100,20 +104,25 @@ class OrderProvider with ChangeNotifier {
 
     final Map<String, dynamic> responseData = json.decode(response.body);
     if (response.statusCode == 200) {
-      var orderData = responseData['data'];
-
-      Order order = Order.fromJson(orderData);
-      result = {'status': true, 'message': 'Successful', 'orders': order};
+      var orderData = responseData;
+      result = {
+        'status': true,
+        'message': orderData['message'],
+        'order': orderData['data']
+      };
+      waitOrder = result['order']['waitOrder'];
+      acceptOrder = result['order']['acceptOrder'];
+      successOrder = result['order']['successOrder'];
 
       _loadingOrderStatus = StatusOrder.SUCCESS;
       notifyListeners();
     } else {
-      _loadingOrderStatus = StatusOrder.FAIL;
-      notifyListeners();
       result = {
         'status': false,
         'message': responseData['message'],
       };
+      _loadingOrderStatus = StatusOrder.FAIL;
+      notifyListeners();
     }
     return result;
   }
