@@ -72,7 +72,7 @@ class _ListPageState extends State<ListPage> {
                       booking: false,
                       order: order.acceptOrder!,
                     ),
-                    ReviewWidget()
+                    ReviewWidget(order: order.successOrder!)
                     // currentItem(true, order.waitOrder!)
                     // currentItem(false, order.acceptOrder!)
                     // reviewOrder(order.successOrder!)

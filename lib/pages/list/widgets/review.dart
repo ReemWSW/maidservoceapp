@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class ReviewWidget extends StatelessWidget {
   const ReviewWidget({
     Key? key,
+    required this.order,
   }) : super(key: key);
+
+  final List order;
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-        itemCount: 2,
+        itemCount: order.length,
         itemBuilder: (BuildContext context, int index) {
           return Container(
             padding: const EdgeInsets.all(8),
@@ -33,12 +37,13 @@ class ReviewWidget extends StatelessWidget {
                   ),
                   title: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      Text("{order[index]['customer']['name']}"),
-                      Text("{order[index]['customer']['phone']}"),
+                    children: [
+                      Text("${order[index]['customer']['name']}"),
+                      Text("${order[index]['customer']['phone']}"),
                     ],
                   ),
-                  subtitle: const Text('DateFormat'),
+                  subtitle: Text(DateFormat('วันที่ yyyy-MM-dd เวลา kk:mm')
+                      .format(DateTime.parse(order[index]['datetime']))),
                   isThreeLine: true,
                   // trailing: order[index]['score'] != 0
                   //     ? CircleAvatar(
