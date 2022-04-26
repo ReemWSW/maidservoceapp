@@ -1,29 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+
+import '../my_work_info.dart';
 
 class ListWork extends StatelessWidget {
   const ListWork({
     Key? key,
+    this.booking,
+    this.order,
   }) : super(key: key);
+
+  final bool? booking;
+  final List? order;
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-        itemCount: 2,
+        itemCount: order!.length,
         itemBuilder: (BuildContext context, int index) {
           return InkWell(
             onTap: () {
-              // print(order[index]['customer']);
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //       builder: (context) => JobInfo(
-              //             order: order[index],
-              //             booking: booking,
-              //           )),
-              // );
+              var idx = index;
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => MyWorkInfo(
+                          order: order!,
+                          booking: booking!,
+                          index: idx,
+                        )),
+              );
             },
             child: Container(
-              padding: const EdgeInsets.only(top: 10),
+              padding: const EdgeInsets.symmetric(vertical: 10),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 color: Colors.white,
@@ -42,12 +51,13 @@ class ListWork extends StatelessWidget {
                 ),
                 title: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text("{order[index]['customer']['name']}"),
-                    Text("{order[index]['customer']['phone']}"),
+                  children: [
+                    Text("${order![index]['customer']['name']}"),
+                    Text("${order![index]['customer']['phone']}"),
                   ],
                 ),
-                subtitle: const Text('DateFormat'),
+                subtitle: Text(DateFormat('วันที่ yyyy-MM-dd เวลา kk:mm')
+                    .format(DateTime.parse(order![index]['datetime']))),
                 isThreeLine: true,
               ),
             ),

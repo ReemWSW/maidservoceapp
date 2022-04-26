@@ -24,7 +24,7 @@ class _ListPageState extends State<ListPage> {
       _idCustomer = user.id;
     });
     await Provider.of<OrderProvider>(context, listen: false)
-        .getorderCustomer(_idCustomer!);
+        .getorderCustomer(_idCustomer!, true);
   }
 
   @override
