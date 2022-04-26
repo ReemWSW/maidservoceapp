@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class ListOrder extends StatelessWidget {
   const ListOrder({
     Key? key,
     required this.booking,
-    this.order,
+    required this.order,
   }) : super(key: key);
 
   final bool? booking;
@@ -13,14 +14,12 @@ class ListOrder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: 3,
+      itemCount: order!.length,
       itemBuilder: (BuildContext context, int index) {
         return InkWell(
-          onTap: () {
-            print('asdd');
-          },
+          onTap: () {},
           child: Container(
-            padding: const EdgeInsets.only(top: 10),
+            padding: const EdgeInsets.symmetric(vertical: 10),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               color: Colors.white,
@@ -39,12 +38,13 @@ class ListOrder extends StatelessWidget {
               ),
               title: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  Text("{order[index]['customer']['name']}"),
-                  Text("{order[index]['customer']['phone']}"),
+                children: [
+                  Text("${order![index]['customer']['name']}"),
+                  Text("${order![index]['customer']['phone']}"),
                 ],
               ),
-              subtitle: const Text('DateFormat'),
+              subtitle: Text(DateFormat('วันที่ yyyy-MM-dd เวลา kk:mm')
+                  .format(DateTime.parse(order![index]['datetime']))),
               isThreeLine: true,
             ),
           ),
