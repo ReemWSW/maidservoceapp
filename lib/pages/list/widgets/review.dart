@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:maid/providers/order_provider.dart';
 import 'package:provider/provider.dart';
 
-class ReviewWidget extends StatelessWidget {
+class ReviewWidget extends StatefulWidget {
   const ReviewWidget({
     Key? key,
     required this.order,
@@ -12,9 +12,14 @@ class ReviewWidget extends StatelessWidget {
   final List order;
 
   @override
+  State<ReviewWidget> createState() => _ReviewWidgetState();
+}
+
+class _ReviewWidgetState extends State<ReviewWidget> {
+  @override
   Widget build(BuildContext context) {
     return ListView.builder(
-        itemCount: order.length,
+        itemCount: widget.order.length,
         itemBuilder: (BuildContext context, int index) {
           return Container(
             padding: const EdgeInsets.all(8),
@@ -40,25 +45,26 @@ class ReviewWidget extends StatelessWidget {
                     title: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("${order[index]['customer']['name']}"),
-                        Text("${order[index]['customer']['phone']}"),
+                        Text("${widget.order[index]['customer']['name']}"),
+                        Text("${widget.order[index]['customer']['phone']}"),
                       ],
                     ),
                     subtitle: Text(DateFormat('วันที่ yyyy-MM-dd เวลา kk:mm')
-                        .format(DateTime.parse(order[index]['datetime']))),
+                        .format(
+                            DateTime.parse(widget.order[index]['datetime']))),
                     isThreeLine: true,
-                    trailing: order[index]['score'] != 0
+                    trailing: widget.order[index]['score'] != 0
                         ? CircleAvatar(
                             backgroundColor: Colors.white,
-                            child: Text("${order[0]["score"]}"),
+                            child: Text("${widget.order[0]["score"]}"),
                           )
                         : ElevatedButton(
                             onPressed: () {
                               generateScore(context, index);
                             },
-                            child: Text(order[index]['score'] == 0
+                            child: Text(widget.order[index]["score"] == 0
                                 ? 'ให้คะแนน'
-                                : '${order[index]['score']}'))),
+                                : '${widget.order[index]["score"]}')))
               ],
             ),
           );
@@ -80,7 +86,11 @@ class ReviewWidget extends StatelessWidget {
                         child: ElevatedButton(
                             onPressed: () {
                               Provider.of<OrderProvider>(context, listen: false)
-                                  .setScoreOrder(order[index]["_id"], score);
+                                  .setScoreOrder(
+                                      widget.order[index]["_id"], score);
+                              setState(() {
+                                widget.order[index]["score"] = score;
+                              });
                               Navigator.pop(context);
                             },
                             child: Text('$score')),

@@ -8,6 +8,7 @@ class Order {
   String? detail;
   DateTime? datetime;
   String? status;
+  int? score;
 
   Order({
     this.id,
@@ -19,6 +20,7 @@ class Order {
     this.detail,
     this.datetime,
     this.status,
+    this.score,
   });
 
   Order.fromJson(Map<String, dynamic> json) {
@@ -32,7 +34,8 @@ class Order {
     type = json['type'];
     detail = json['detail'];
     datetime = DateTime.tryParse(json['datetime']);
-    detail = json['status'];
+    status = json['status'];
+    score = json['score'];
   }
 
   Map<String, dynamic> toJson() {
@@ -52,6 +55,7 @@ class Order {
     data['detail'] = detail;
     data['datetime'] = datetime;
     data['status'] = status;
+    data['score'] = score;
     return data;
   }
 }
