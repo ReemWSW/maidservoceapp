@@ -1,4 +1,5 @@
 class Order {
+  String? id;
   Customer? customer;
   Customer? maid;
   Address? address;
@@ -6,9 +7,10 @@ class Order {
   String? type;
   String? detail;
   DateTime? datetime;
-  EnumOrder? status;
+  String? status;
 
   Order({
+    this.id,
     this.customer,
     this.maid,
     this.address,
@@ -20,6 +22,7 @@ class Order {
   });
 
   Order.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
     customer =
         json['customer'] != null ? Customer.fromJson(json['customer']) : null;
     maid = json['maid'] != null ? Customer.fromJson(json['maid']) : null;
@@ -34,6 +37,7 @@ class Order {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
     if (customer != null) {
       data['customer'] = customer!.toJson();
     }
