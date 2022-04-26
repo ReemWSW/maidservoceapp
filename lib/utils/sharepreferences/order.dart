@@ -5,7 +5,7 @@ import 'dart:async';
 import 'package:maid/models/order.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class UserPreferences {
+class OrderPreferences {
   Future<bool> saveOrder(Order order) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 

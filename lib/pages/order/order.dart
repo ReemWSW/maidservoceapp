@@ -41,7 +41,7 @@ class _OrderPageState extends State<OrderPage> {
   String? addressValidate(String? value) =>
       value!.isEmpty ? 'กรุณาที่อยู่' : null;
 
-  String? _address, _detail, _category;
+  String? _address, _detail, _category, _categoryText;
   String? _typeSelected = null;
   int index = 0;
 
@@ -49,7 +49,7 @@ class _OrderPageState extends State<OrderPage> {
   List? filterData;
   List? address;
 
-  String? _customerName, _customePhone, _customerImage64 = '';
+  String? _customerName, _customePhone, _customerImage64 = '', _customerid;
 
   Future<String> loadJsonData() async {
     var jsonText = await rootBundle.loadString('assets/json/select.json');
@@ -63,6 +63,7 @@ class _OrderPageState extends State<OrderPage> {
   void submitOrder() async {
     OrderProvider order = Provider.of<OrderProvider>(context, listen: false);
     await UserPreferences().getUser().then((value) {
+      _customerid = value.id;
       _customerImage64 = value.image;
       _customerName = value.name;
       _customePhone = value.phone;
@@ -72,6 +73,7 @@ class _OrderPageState extends State<OrderPage> {
       form.save();
       order
           .order(
+        _customerid!,
         _customerImage64!,
         _customerName!,
         _customePhone!,
@@ -105,22 +107,23 @@ class _OrderPageState extends State<OrderPage> {
 
   @override
   void initState() {
+    _category = "${widget.category}";
     switch (widget.category) {
       case Categories.wash:
         index = 0;
-        _category = "ซักผ้า";
+        _categoryText = "ซักผ้า";
         break;
       case Categories.clean:
         index = 1;
-        _category = "ทำความสะอาดบ้าน";
+        _categoryText = "ทำความสะอาดบ้าน";
         break;
       case Categories.furniture:
         index = 2;
-        _category = "ทำความสะอาดเฟอร์นิเจอร์";
+        _categoryText = "ทำความสะอาดเฟอร์นิเจอร์";
         break;
       case Categories.all:
         index = 3;
-        _category = "ทำความสะอาดทั้งหมด";
+        _categoryText = "ทำความสะอาดทั้งหมด";
         break;
     }
     loadJsonData();

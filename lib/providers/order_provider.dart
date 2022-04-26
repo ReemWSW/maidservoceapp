@@ -14,10 +14,15 @@ enum StatusOrder {
 
 class OrderProvider with ChangeNotifier {
   StatusOrder _loadingOrderStatus = StatusOrder.IDLE;
+  List<dynamic>? waitOrder;
+  List<dynamic>? acceptOrder;
+  List<dynamic>? successOrder;
+  List<dynamic>? customer;
 
   StatusOrder get loadingOrderStatus => _loadingOrderStatus;
 
   Future<Map<String, dynamic>> order(
+    String customerId,
     String customerImage,
     String customerName,
     String customerPhone,
@@ -34,6 +39,7 @@ class OrderProvider with ChangeNotifier {
 
     final Map<String, dynamic> orderData = {
       "customer": {
+        "id": customerId,
         "image": customerImage,
         "name": customerName,
         "phone": customerPhone,
@@ -80,15 +86,11 @@ class OrderProvider with ChangeNotifier {
     return result;
   }
 
-  Future<Map<String, dynamic>> getorder(
-    String addressAmphure,
-    String addressProvince,
-  ) async {
+  Future<Map<String, dynamic>> getorderCustomer(String id) async {
     var result;
 
     final Map<String, dynamic> orderData = {
-      "amphure": addressAmphure,
-      "province": addressProvince
+      "id": id,
     };
 
     _loadingOrderStatus = StatusOrder.LOADING;
@@ -102,20 +104,25 @@ class OrderProvider with ChangeNotifier {
 
     final Map<String, dynamic> responseData = json.decode(response.body);
     if (response.statusCode == 200) {
-      var orderData = responseData['data'];
-
-      Order order = Order.fromJson(orderData);
-      result = {'status': true, 'message': 'Successful', 'user': order};
+      var orderData = responseData;
+      result = {
+        'status': true,
+        'message': orderData['message'],
+        'order': orderData['data']
+      };
+      waitOrder = result['order']['waitOrder'];
+      acceptOrder = result['order']['acceptOrder'];
+      successOrder = result['order']['successOrder'];
 
       _loadingOrderStatus = StatusOrder.SUCCESS;
       notifyListeners();
     } else {
-      _loadingOrderStatus = StatusOrder.FAIL;
-      notifyListeners();
       result = {
         'status': false,
         'message': responseData['message'],
       };
+      _loadingOrderStatus = StatusOrder.FAIL;
+      notifyListeners();
     }
     return result;
   }

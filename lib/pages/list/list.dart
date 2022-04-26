@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:maid/providers/order_provider.dart';
+import 'package:maid/utils/sharepreferences/auth.dart';
 import 'package:provider/provider.dart';
 
 import 'widgets/list_order.dart';
@@ -16,9 +17,19 @@ class ListPage extends StatefulWidget {
 
 class _ListPageState extends State<ListPage> {
   List<String> name = ['รายการปัจจุบัน', 'รายการที่ผ่าน', 'รีวิว'];
+  String? _idCustomer;
+
+  void fetchData() async {
+    await UserPreferences().getUser().then((user) {
+      _idCustomer = user.id;
+    });
+    await Provider.of<OrderProvider>(context, listen: false)
+        .getorderCustomer(_idCustomer!);
+  }
 
   @override
   void initState() {
+    fetchData();
     super.initState();
   }
 
@@ -51,10 +62,16 @@ class _ListPageState extends State<ListPage> {
             ),
             body: Consumer<OrderProvider>(
               builder: (context, order, child) {
-                return const TabBarView(
+                return TabBarView(
                   children: <Widget>[
-                    ListOrder(booking: true),
-                    ListOrder(booking: false),
+                    ListOrder(
+                      booking: true,
+                      order: order.waitOrder!,
+                    ),
+                    ListOrder(
+                      booking: false,
+                      order: order.acceptOrder!,
+                    ),
                     ReviewWidget()
                     // currentItem(true, order.waitOrder!)
                     // currentItem(false, order.acceptOrder!)
