@@ -58,16 +58,31 @@ class _MyWorkPageState extends State<MyWorkPage> {
                     .toList()),
           ),
           body: Consumer<OrderProvider>(builder: (context, order, child) {
+            const align = Align(
+                alignment: Alignment.center,
+                child: Text(
+                  'ไม่มีข้อมูล',
+                  style: TextStyle(fontSize: 25, color: Colors.grey),
+                ));
             return TabBarView(children: [
-              ListWork(
-                booking: true,
-                order: order.waitOrder!,
-              ),
-              ListWork(
-                booking: true,
-                order: order.acceptOrder!,
-              ),
-              ReviewWork(order: order.successOrder!),
+              if (order.waitOrder!.isNotEmpty)
+                ListWork(
+                  booking: true,
+                  order: order.waitOrder!,
+                )
+              else
+                align,
+              if (order.acceptOrder!.isNotEmpty)
+                ListWork(
+                  booking: true,
+                  order: order.acceptOrder!,
+                )
+              else
+                align,
+              if (order.successOrder!.isNotEmpty)
+                ReviewWork(order: order.successOrder!)
+              else
+                align,
             ]);
           }),
         ));
