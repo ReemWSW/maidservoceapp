@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:maid/pages/list/widgets/container_image.dart';
 import 'package:maid/providers/order_provider.dart';
+import 'package:maid/widget/bottombar.dart';
 import 'package:provider/provider.dart';
 
 class ListInfoPage extends StatelessWidget {
@@ -97,13 +98,13 @@ class ListInfoPage extends StatelessWidget {
       floatingActionButton: !booking
           ? FloatingActionButton(
               onPressed: () async {
-                // await Provider.of<OrderProvider>(context, listen: false)
-                //     .setStatusOrder(order[0]["_id"], StatusOrder.SUCCESS);
+                await Provider.of<OrderProvider>(context, listen: false)
+                    .setStatusOrder(order[index]["_id"], 'EnumOrder.SUCCESS');
 
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(builder: (context) => const ListPage()),
-                // );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const HomePage()),
+                );
               },
               backgroundColor: Colors.green,
               child: const Icon(Icons.check),
