@@ -57,6 +57,7 @@ class Order {
 }
 
 class Customer {
+  String? id;
   String? image;
   String? name;
   String? phone;
@@ -64,6 +65,7 @@ class Customer {
   Customer({this.image, this.name, this.phone});
 
   Customer.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
     image = json['image'];
     name = json['name'];
     phone = json['phone'];
@@ -71,6 +73,7 @@ class Customer {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
     data['image'] = image;
     data['name'] = name;
     data['phone'] = phone;
