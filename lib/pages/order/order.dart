@@ -49,7 +49,7 @@ class _OrderPageState extends State<OrderPage> {
   List? filterData;
   List? address;
 
-  String? _customerName, _customePhone, _customerImage64 = '';
+  String? _customerName, _customePhone, _customerImage64 = '', _customerid;
 
   Future<String> loadJsonData() async {
     var jsonText = await rootBundle.loadString('assets/json/select.json');
@@ -63,6 +63,7 @@ class _OrderPageState extends State<OrderPage> {
   void submitOrder() async {
     OrderProvider order = Provider.of<OrderProvider>(context, listen: false);
     await UserPreferences().getUser().then((value) {
+      _customerid = value.id;
       _customerImage64 = value.image;
       _customerName = value.name;
       _customePhone = value.phone;
@@ -72,6 +73,7 @@ class _OrderPageState extends State<OrderPage> {
       form.save();
       order
           .order(
+        _customerid!,
         _customerImage64!,
         _customerName!,
         _customePhone!,

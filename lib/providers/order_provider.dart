@@ -18,6 +18,7 @@ class OrderProvider with ChangeNotifier {
   StatusOrder get loadingOrderStatus => _loadingOrderStatus;
 
   Future<Map<String, dynamic>> order(
+    String customerId,
     String customerImage,
     String customerName,
     String customerPhone,
@@ -34,6 +35,7 @@ class OrderProvider with ChangeNotifier {
 
     final Map<String, dynamic> orderData = {
       "customer": {
+        "id": customerId,
         "image": customerImage,
         "name": customerName,
         "phone": customerPhone,
@@ -80,15 +82,11 @@ class OrderProvider with ChangeNotifier {
     return result;
   }
 
-  Future<Map<String, dynamic>> getorder(
-    String addressAmphure,
-    String addressProvince,
-  ) async {
+  Future<Map<String, dynamic>> getorderCustomer(String id) async {
     var result;
 
     final Map<String, dynamic> orderData = {
-      "amphure": addressAmphure,
-      "province": addressProvince
+      "id": id,
     };
 
     _loadingOrderStatus = StatusOrder.LOADING;
