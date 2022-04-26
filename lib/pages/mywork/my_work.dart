@@ -65,9 +65,9 @@ class _MyWorkPageState extends State<MyWorkPage> {
               ),
               ListWork(
                 booking: true,
-                order: order.waitOrder!,
+                order: order.acceptOrder!,
               ),
-              ReviewWork(),
+              ReviewWork(order: order.successOrder!),
             ]);
           }),
         ));

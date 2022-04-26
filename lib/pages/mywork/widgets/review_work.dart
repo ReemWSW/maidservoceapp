@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class ReviewWork extends StatelessWidget {
   const ReviewWork({
     Key? key,
+    required this.order,
   }) : super(key: key);
+
+  final List order;
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-        itemCount: 6,
+        itemCount: order.length,
         itemBuilder: (BuildContext context, int index) {
           return Container(
             margin: const EdgeInsets.all(8),
+            padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               color: Colors.white,
@@ -32,14 +37,16 @@ class ReviewWork extends StatelessWidget {
                   ),
                   title: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      Text("order[0]['customer']['name']"),
+                    children: [
+                      Text("${order[index]['customer']['name']}"),
+                      Text("${order[index]['customer']['phone']}"),
                     ],
                   ),
-                  subtitle: const Text('วันที่ yyyy-MM-dd เวลา kk:mm'),
-                  trailing: const CircleAvatar(
+                  subtitle: Text(DateFormat('วันที่ yyyy-MM-dd เวลา kk:mm')
+                      .format(DateTime.parse(order[index]['datetime']))),
+                  trailing: CircleAvatar(
                     backgroundColor: Colors.white,
-                    child: Text("{order[0]['score']}"),
+                    child: Text("${order[index]['score']}"),
                   ),
                   isThreeLine: true,
                 ),
