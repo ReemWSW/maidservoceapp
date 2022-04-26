@@ -62,20 +62,32 @@ class _ListPageState extends State<ListPage> {
             ),
             body: Consumer<OrderProvider>(
               builder: (context, order, child) {
+                const align = Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                      'ไม่มีข้อมูล',
+                      style: TextStyle(fontSize: 25, color: Colors.grey),
+                    ));
                 return TabBarView(
                   children: <Widget>[
-                    ListOrder(
-                      booking: true,
-                      order: order.waitOrder!,
-                    ),
-                    ListOrder(
-                      booking: false,
-                      order: order.acceptOrder!,
-                    ),
-                    ReviewWidget(order: order.successOrder!)
-                    // currentItem(true, order.waitOrder!)
-                    // currentItem(false, order.acceptOrder!)
-                    // reviewOrder(order.successOrder!)
+                    if (order.waitOrder!.isNotEmpty)
+                      ListOrder(
+                        booking: true,
+                        order: order.waitOrder!,
+                      )
+                    else
+                      align,
+                    if (order.acceptOrder!.isNotEmpty)
+                      ListOrder(
+                        booking: false,
+                        order: order.acceptOrder!,
+                      )
+                    else
+                      align,
+                    if (order.successOrder!.isNotEmpty)
+                      ReviewWidget(order: order.successOrder!)
+                    else
+                      align,
                   ],
                 );
               },
