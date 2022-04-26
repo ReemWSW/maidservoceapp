@@ -9,14 +9,18 @@ class ListInfoPage extends StatelessWidget {
     Key? key,
     required this.booking,
     required this.order,
+    required this.index,
   }) : super(key: key);
 
   final bool booking;
   final List order;
+  final int index;
+
   @override
   Widget build(BuildContext context) {
     const textheadStyle = TextStyle(fontSize: 20, fontWeight: FontWeight.bold);
-    DateTime dateTime = DateTime.parse(order[0]["datetime"]);
+
+    print(index);
 
     return Scaffold(
       appBar: AppBar(
@@ -32,7 +36,7 @@ class ListInfoPage extends StatelessWidget {
                   child: Align(
                     alignment: Alignment.center,
                     child: ContainerImage(
-                      image: '${order[0]["customer"]["image"]}',
+                      image: '${order[index]["customer"]["image"]}',
                     ),
                   ),
                 ),
@@ -46,9 +50,9 @@ class ListInfoPage extends StatelessWidget {
                         'ข้อมูลผู้ติดต่อ',
                         style: textheadStyle,
                       ),
-                      textData('${order[0]["customer"]["name"]}'),
+                      textData('${order[index]["customer"]["name"]}'),
                       textData(
-                          'เบอร์โทรศัพท์ ${order[0]["customer"]["phone"]}'),
+                          'เบอร์โทรศัพท์ ${order[index]["customer"]["phone"]}'),
                       const SizedBox(
                         height: 10,
                       ),
@@ -57,7 +61,7 @@ class ListInfoPage extends StatelessWidget {
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       textData(
-                          'ที่อยู่ ${order[0]["address"]["detail"]} ตำบล ${order[0]["address"]["tombon"]} อำเภอ ${order[0]["address"]["amphure"]} จังหวัด ${order[0]["address"]["province"]}'),
+                          'ที่อยู่ ${order[index]["address"]["detail"]} ตำบล ${order[index]["address"]["tombon"]} อำเภอ ${order[index]["address"]["amphure"]} จังหวัด ${order[index]["address"]["province"]}'),
                     ],
                   ),
                 ),
@@ -70,16 +74,18 @@ class ListInfoPage extends StatelessWidget {
                         'รายละเอียดของงาน',
                         style: textheadStyle,
                       ),
-                      if (order[0]["category"] == "Categories.CLEANING")
+                      if (order[index]["category"] == "Categories.CLEANING")
                         textData("ทำความสะอาดบ้าน")
-                      else if (order[0]["category"] == "Categories.FURNITURE")
+                      else if (order[index]["category"] ==
+                          "Categories.FURNITURE")
                         textData("ทำความสะอาดเฟอร์นิดจอร์")
-                      else if (order[0]["category"] == "Categories.WASH")
+                      else if (order[index]["category"] == "Categories.WASH")
                         textData("ซักผ้า"),
-                      textData(order[0]["type"]),
-                      textData(
-                          DateFormat('วันที่ yyyy-MM-dd').format(dateTime)),
-                      textData(DateFormat('เวลา kk:mm').format(dateTime)),
+                      textData(order[index]["type"]),
+                      textData(DateFormat('วันที่ yyyy-MM-dd')
+                          .format(DateTime.parse(order[index]['datetime']))),
+                      textData(DateFormat('เวลา kk:mm')
+                          .format(DateTime.parse(order[index]['datetime']))),
                     ],
                   ),
                 ),

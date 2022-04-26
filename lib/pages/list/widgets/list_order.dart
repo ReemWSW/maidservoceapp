@@ -20,10 +20,12 @@ class ListOrder extends StatelessWidget {
       itemBuilder: (BuildContext context, int index) {
         return InkWell(
           onTap: () {
+            var idx = index;
             Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (_) => ListInfoPage(
+                          index: idx,
                           booking: booking!,
                           order: order!,
                         )));
