@@ -3,6 +3,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:maid/providers/order_provider.dart';
+import 'package:maid/utils/enum.dart';
+import 'package:maid/widget/bottombar.dart';
+import 'package:provider/provider.dart';
 
 class MyWorkInfo extends StatelessWidget {
   const MyWorkInfo({
@@ -93,15 +97,14 @@ class MyWorkInfo extends StatelessWidget {
                               style: ElevatedButton.styleFrom(
                                   primary: Colors.green),
                               onPressed: () async {
-                                // await Provider.of<OrderProvider>(context,
-                                //         listen: false)
-                                //     .setStatusOrder(widget.order["_id"],
-                                //         StatusOrder.ACCEPT);
-                                // Navigator.of(context).pushAndRemoveUntil(
-                                //     MaterialPageRoute(
-                                //         builder: (context) =>
-                                //             const GetListJobPage()),
-                                //     (Route<dynamic> route) => false);
+                                await Provider.of<OrderProvider>(context,
+                                        listen: false)
+                                    .setStatusOrder(order[index]["_id"],
+                                        'EnumOrder.ACCEPT');
+                                Navigator.of(context).pushAndRemoveUntil(
+                                    MaterialPageRoute(
+                                        builder: (context) => const HomePage()),
+                                    (Route<dynamic> route) => false);
                               },
                               child: const Text('รับงาน'),
                             ),

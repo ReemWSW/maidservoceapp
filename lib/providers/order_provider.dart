@@ -125,4 +125,52 @@ class OrderProvider with ChangeNotifier {
     }
     return result;
   }
+
+  Future setStatusOrder(String order, String status) async {
+    final Map<String, dynamic> orderData = {
+      'order': order,
+      'status': status,
+    };
+
+    var uri = AppUrl.setStatusOrder;
+    // print(uri);
+    Response response = await post(
+      Uri.parse(uri),
+      body: json.encode(orderData),
+      headers: {'Content-Type': 'application/json'},
+    );
+    // print(response.body);
+
+    final Map<String, dynamic> responseData = json.decode(response.body);
+    var result;
+    if (response.statusCode == 200) {
+      var orderData = responseData['data'];
+      result = {'status': true, 'message': 'Successful', 'order': orderData};
+
+      if (result["order"]["status"] == 'StatusOrder.ACCEPT') {
+        for (var item in waitOrder!) {
+          if (item["_id"] == result["order"]["_id"]) {
+            acceptOrder!.add(item);
+            waitOrder!.remove(item);
+            notifyListeners();
+          }
+        }
+      } else if (result["order"]["status"] == 'StatusOrder.SUCCESS') {
+        for (var item in waitOrder!) {
+          if (item["_id"] == result["order"]["_id"]) {
+            successOrder!.add(item);
+            acceptOrder!.remove(item);
+            notifyListeners();
+          }
+        }
+      }
+      print(result["order"]["_id"]);
+    } else {
+      result = {
+        'status': false,
+        'message': responseData['message'],
+      };
+    }
+    notifyListeners();
+  }
 }
