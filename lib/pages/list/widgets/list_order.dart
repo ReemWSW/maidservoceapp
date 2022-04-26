@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../list_info.dart';
+
 class ListOrder extends StatelessWidget {
   const ListOrder({
     Key? key,
@@ -17,7 +19,15 @@ class ListOrder extends StatelessWidget {
       itemCount: order!.length,
       itemBuilder: (BuildContext context, int index) {
         return InkWell(
-          onTap: () {},
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (_) => ListInfoPage(
+                          booking: booking!,
+                          order: order!,
+                        )));
+          },
           child: Container(
             padding: const EdgeInsets.symmetric(vertical: 10),
             decoration: BoxDecoration(
