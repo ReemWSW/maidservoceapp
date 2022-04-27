@@ -16,14 +16,23 @@ class UserPreferences {
     prefs.setString("phone", user.phone!);
     prefs.setString("token", user.token!);
     prefs.setBool("maid", user.maid!);
+    prefs.setString("amphure", user.address!.amphure!);
+    prefs.setString("province", user.address!.province!);
+    prefs.setString("tombon", user.address!.tombon!);
 
     return prefs.commit();
   }
 
-  Future<bool> setMaid(bool maid) async {
+  Future<bool> setMaid(
+      bool maid, String province, String amphure, String tombon) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
+    print(province);
+
     prefs.setBool("maid", maid);
+    prefs.setString("amphure", amphure);
+    prefs.setString("province", province);
+    prefs.setString("tombon", tombon);
 
     return prefs.commit();
   }
@@ -37,7 +46,12 @@ class UserPreferences {
     String? email = prefs.getString("email");
     String? phone = prefs.getString("phone");
     bool? maid = prefs.getBool("maid");
+    String? amphure = prefs.getString("amphure");
+    String? province = prefs.getString("province");
+    String? tombon = prefs.getString("tombon");
     String? token = prefs.getString("token");
+
+    var address = Address(tombon: tombon, amphure: amphure, province: province);
 
     return User(
       id: userid,
@@ -46,6 +60,7 @@ class UserPreferences {
       email: email,
       phone: phone,
       maid: maid,
+      address: address,
       token: token,
     );
   }
