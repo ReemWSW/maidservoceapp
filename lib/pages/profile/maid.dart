@@ -19,6 +19,10 @@ class MaidSetupPage extends StatefulWidget {
 class _MaidSetupPageState extends State<MaidSetupPage> {
   final _formKey = GlobalKey<FormState>();
 
+  final TextEditingController _provinceController = TextEditingController();
+  final TextEditingController _amphureController = TextEditingController();
+  final TextEditingController _tombonController = TextEditingController();
+
   String? addressValidate(String? value) =>
       value!.isEmpty ? 'กรุณาที่อยู่' : null;
 
@@ -44,8 +48,14 @@ class _MaidSetupPageState extends State<MaidSetupPage> {
       setState(() {
         valuefirst = user.maid!;
         _id = user.id;
+        _province = user.address!.province!;
+        _amphure = user.address!.amphure!;
+        _tombon = user.address!.tombon!;
       });
     });
+    _provinceController.text = _province!;
+    _amphureController.text = _amphure!;
+    _tombonController.text = _tombon!;
   }
 
   Future regisMaid(
@@ -56,14 +66,15 @@ class _MaidSetupPageState extends State<MaidSetupPage> {
     String _amphure,
     String _tombon,
   ) async {
-    Provider.of<UserProvider>(context, listen: false).setPostMaid(maid);
+    // Provider.of<UserProvider>(context, listen: false).setPostMaid(
+    //   maid,
+    //   _province,
+    //   _amphure,
+    //   _tombon,
+    // );
     await Provider.of<UserProvider>(context, listen: false)
         .setMaid(_id, maid, _province, _amphure, _tombon);
   }
-
-  final TextEditingController _provinceController = TextEditingController();
-  final TextEditingController _amphureController = TextEditingController();
-  final TextEditingController _tombonController = TextEditingController();
 
   String? provinceValidate(String? value) =>
       value!.isEmpty ? 'กรุณาระบุจังหวัด' : null;
