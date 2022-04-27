@@ -87,10 +87,14 @@ class OrderProvider with ChangeNotifier {
   }
 
   Future<Map<String, dynamic>> getorderCustomer(
-      String id, bool customer) async {
+      String id, bool customer, String tombon) async {
     var result;
 
-    final Map<String, dynamic> orderData = {"id": id, "customer": customer};
+    final Map<String, dynamic> orderData = {
+      "id": id,
+      "customer": customer,
+      "tombon": tombon,
+    };
 
     _loadingOrderStatus = StatusOrder.LOADING;
     notifyListeners();
