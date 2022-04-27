@@ -36,8 +36,8 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   void regisMaid(BuildContext context, String _id) async {
-    Provider.of<UserProvider>(context, listen: false).setPostMaid();
-    Provider.of<UserProvider>(context, listen: false).setMaid(_id);
+    // Provider.of<UserProvider>(context, listen: false).setPostMaid();
+    // Provider.of<UserProvider>(context, listen: false).setMaid(_id);
     setState(() {});
   }
 
@@ -66,14 +66,15 @@ class _ProfilePageState extends State<ProfilePage> {
                   RowText(label: 'เบอร์โทรศัพท์', widget: Text('$_phone')),
                   InkWell(
                     onTap: () {
-                      // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //         builder: (_) => const MaidSetupPage()));
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (_) => MaidSetupPage()));
                     },
-                    child: RowText(
-                        label: 'ตั้งคาแม่บ้าน',
-                        widget: Text(_maid == true ? "แม่บ้าน" : 'ลูกค้า')),
+                    child: Consumer<UserProvider>(
+                      builder: (context, value, child) => RowText(
+                          label: 'ตั้งคาแม่บ้าน',
+                          widget: Text(
+                              value.userMaid == true ? "แม่บ้าน" : 'ลูกค้า')),
+                    ),
                   ),
                   // RowText(
                   //     label: 'สถานะ',

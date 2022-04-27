@@ -17,32 +17,35 @@ class UserProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void setPostMaid() {
-    _user.maid = true;
+  void setPostMaid(bool maid) {
+    _user.maid = maid;
     notifyListeners();
-    UserPreferences().setMaid(true);
+    UserPreferences().setMaid(maid);
   }
 
-  Future<Map<String, dynamic>> setMaid(String? id) async {
+  Future<Map<String, dynamic>> setMaid(String? id, bool? maid) async {
     final Map<String, dynamic> registrationData = {
       'id': id,
+      'maid': maid,
     };
 
     var result;
 
     Response response = await post(
       Uri.parse(AppUrl.setMaid),
-      body: json.encode({"id": id}),
+      body: json.encode({
+        "id": id,
+        'maid': maid,
+      }),
       headers: {'Content-Type': 'application/json'},
     );
-
 
     final Map<String, dynamic> responseData = json.decode(response.body);
     if (response.statusCode == 200) {
       var userData = responseData['data'];
 
-      UserPreferences().setMaid(true);
-      _user.maid = true;
+      UserPreferences().setMaid(maid!);
+      _user.maid = maid;
       notifyListeners();
 
       result = {
