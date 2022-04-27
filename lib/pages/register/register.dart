@@ -84,7 +84,7 @@ class _RegisterPageState extends State<RegisterPage> {
     final imageContainer = Center(
       child: InkWell(
         child: Container(
-          child: _image64 == ''
+          child: _image64 == '-'
               ? const Icon(
                   Icons.account_circle_rounded,
                   color: Colors.grey,
