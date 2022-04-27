@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
 import 'package:maid/models/user.dart';
 import 'package:maid/utils/app_url.dart';
+import 'package:maid/utils/enum.dart';
 import 'package:maid/utils/sharepreferences/auth.dart';
 
 class UserProvider with ChangeNotifier {
@@ -20,36 +21,36 @@ class UserProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future setPostMaid(
-      bool maid, String province, String amphure, String tombon) async {
+  Future setPostMaid(bool maid, String province, String amphure, String tombon,
+      String category) async {
     _user.maid = maid;
     _user.address!.province = province;
     _user.address!.amphure = amphure;
     _user.address!.tombon = tombon;
+    _user.category = category;
 
     notifyListeners();
-    UserPreferences().setMaid(
-      maid,
-      province,
-      amphure,
-      tombon,
-    );
+    UserPreferences().setMaid(maid, province, amphure, tombon, category);
   }
 
-  Future<Map<String, dynamic>> setMaid(
-    String? id,
-    bool? maid,
-    String province,
-    String amphure,
-    String tombon,
-  ) async {
-    final Map<String, dynamic> registrationData = {
-      'id': id,
-      'maid': maid,
-      'province': province,
-      'amphure': amphure,
-      'tombon': tombon,
-    };
+  Future<Map<String, dynamic>> setMaid(String? id, bool? maid, String province,
+      String amphure, String tombon, String category) async {
+    var categoryPost;
+    switch (category) {
+      case 'ซักผ้า':
+        categoryPost = "${Categories.wash}";
+        break;
+      case 'ทำความสะอาดบ้าน':
+        categoryPost = "${Categories.clean}";
+        break;
+      case 'ทำความสะอาดเฟอร์นิเจอร์':
+        categoryPost = "${Categories.furniture}";
+        break;
+      case 'ทำความสะอาดทั้งหมด':
+        categoryPost = "${Categories.all}";
+        break;
+      default:
+    }
     var result;
 
     Response response = await post(
@@ -60,6 +61,7 @@ class UserProvider with ChangeNotifier {
         'province': province,
         'amphure': amphure,
         'tombon': tombon,
+        'category': categoryPost,
       }),
       headers: {'Content-Type': 'application/json'},
     );
@@ -73,8 +75,10 @@ class UserProvider with ChangeNotifier {
         province,
         amphure,
         tombon,
+        category,
       );
       _user.maid = maid;
+      _user.category = category;
 
       var address = _user.address;
       if (address != null) {
