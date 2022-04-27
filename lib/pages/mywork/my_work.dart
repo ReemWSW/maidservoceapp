@@ -19,10 +19,12 @@ class MyWorkPage extends StatefulWidget {
 class _MyWorkPageState extends State<MyWorkPage> {
   List<String> name = ['รับงาน', 'รับงานแล้ว', 'รีวิว'];
   String? _idMaid;
+  bool? _maid;
 
   void fetchData() async {
     await UserPreferences().getUser().then((user) {
       _idMaid = user.id;
+      _maid = user.maid;
     });
     await Provider.of<OrderProvider>(context, listen: false)
         .getorderCustomer(_idMaid!, false);
@@ -80,26 +82,36 @@ class _MyWorkPageState extends State<MyWorkPage> {
                     style: TextStyle(fontSize: 25, color: Colors.grey),
                   ));
               if (order.loadingOrderStatus != StatusOrder.LOADING) {
-                return TabBarView(children: [
-                  if (order.waitOrder!.isNotEmpty)
-                    ListWork(
-                      booking: true,
-                      order: order.waitOrder!,
-                    )
-                  else
-                    align,
-                  if (order.acceptOrder!.isNotEmpty)
-                    ListWork(
-                      booking: true,
-                      order: order.acceptOrder!,
-                    )
-                  else
-                    align,
-                  if (order.successOrder!.isNotEmpty)
-                    ReviewWork(order: order.successOrder!)
-                  else
-                    align,
-                ]);
+                if (_maid == true) {
+                  return TabBarView(children: [
+                    if (order.waitOrder!.isNotEmpty)
+                      ListWork(
+                        booking: true,
+                        order: order.waitOrder!,
+                      )
+                    else
+                      align,
+                    if (order.acceptOrder!.isNotEmpty)
+                      ListWork(
+                        booking: true,
+                        order: order.acceptOrder!,
+                      )
+                    else
+                      align,
+                    if (order.successOrder!.isNotEmpty)
+                      ReviewWork(order: order.successOrder!)
+                    else
+                      align,
+                  ]);
+                } else {
+                  return const Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                      'กรุณาสมัครแม่บ้าน',
+                      style: TextStyle(fontSize: 25, color: Colors.grey),
+                    ),
+                  );
+                }
               } else {
                 return const Align(
                     alignment: Alignment.center,
