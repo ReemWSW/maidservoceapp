@@ -21,16 +21,17 @@ class ListPage extends StatefulWidget {
 
 class _ListPageState extends State<ListPage> {
   List<String> name = ['รายการปัจจุบัน', 'รายการที่ผ่าน', 'รีวิว'];
-  String? _idCustomer;
+  String? _idCustomer, _tombon;
 
   List? order;
 
   void fetchData() async {
     await UserPreferences().getUser().then((user) {
       _idCustomer = user.id;
+      _tombon = user.address!.tombon;
     });
     await Provider.of<OrderProvider>(context, listen: false)
-        .getorderCustomer(_idCustomer!, true);
+        .getorderCustomer(_idCustomer!, true, _tombon!);
   }
 
   @override
