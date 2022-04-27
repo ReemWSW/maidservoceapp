@@ -4,5 +4,3 @@ enum Categories {
   furniture,
   all,
 }
-
-enum EnumOrder { WAIT, ACCEPT, SUCCESS }

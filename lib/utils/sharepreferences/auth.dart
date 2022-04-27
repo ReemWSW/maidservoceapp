@@ -33,7 +33,6 @@ class UserPreferences {
   ) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    print(province);
 
     prefs.setBool("maid", maid);
     prefs.setString("amphure", amphure);
@@ -69,6 +68,7 @@ class UserPreferences {
       phone: phone,
       maid: maid,
       address: address,
+      category: category,
       token: token,
     );
   }
