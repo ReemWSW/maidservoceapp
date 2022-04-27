@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart';
 import 'package:maid/models/order.dart';
 import 'package:maid/utils/app_url.dart';
+import 'package:maid/utils/enum.dart';
 
 enum StatusOrder {
   IDLE,
@@ -87,13 +88,30 @@ class OrderProvider with ChangeNotifier {
   }
 
   Future<Map<String, dynamic>> getorderCustomer(
-      String id, bool customer, String tombon) async {
+      String id, bool customer, String tombon, String categoty) async {
     var result;
+    var categoryPost;
+    switch (categoty) {
+      case 'ซักผ้า':
+        categoryPost = "${Categories.wash}";
+        break;
+      case 'ทำความสะอาดบ้าน':
+        categoryPost = "${Categories.clean}";
+        break;
+      case 'ทำความสะอาดเฟอร์นิเจอร์':
+        categoryPost = "${Categories.furniture}";
+        break;
+      case 'ทำความสะอาดทั้งหมด':
+        categoryPost = "${Categories.all}";
+        break;
+      default:
+    }
 
     final Map<String, dynamic> orderData = {
       "id": id,
       "customer": customer,
       "tombon": tombon,
+      "categoty": categoryPost,
     };
 
     _loadingOrderStatus = StatusOrder.LOADING;
