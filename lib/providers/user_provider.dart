@@ -11,9 +11,19 @@ class UserProvider with ChangeNotifier {
 
   User get user => _user;
   bool? get userMaid => _user.maid;
+  String? get provinceMaid => _user.address!.province;
+  String? get amphureMaid => _user.address!.amphure;
+  String? get tombonMaid => _user.address!.tombon;
 
   void setUser(User user) {
     _user = user;
+    notifyListeners();
+  }
+
+  void setAddressMaid(String province, String amphure, String tombon) {
+    _user.address!.province = province;
+    _user.address!.amphure = amphure;
+    _user.address!.tombon = tombon;
     notifyListeners();
   }
 
@@ -23,19 +33,30 @@ class UserProvider with ChangeNotifier {
     UserPreferences().setMaid(maid);
   }
 
-  Future<Map<String, dynamic>> setMaid(String? id, bool? maid) async {
+  Future<Map<String, dynamic>> setMaid(
+    String? id,
+    bool? maid,
+    String province,
+    String amphure,
+    String tombon,
+  ) async {
     final Map<String, dynamic> registrationData = {
       'id': id,
       'maid': maid,
+      'province': province,
+      'amphure': amphure,
+      'tombon': tombon,
     };
-
     var result;
 
     Response response = await post(
       Uri.parse(AppUrl.setMaid),
       body: json.encode({
-        "id": id,
+        'id': id,
         'maid': maid,
+        'province': province,
+        'amphure': amphure,
+        'tombon': tombon,
       }),
       headers: {'Content-Type': 'application/json'},
     );

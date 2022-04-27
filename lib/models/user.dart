@@ -8,6 +8,8 @@ class User {
   String? password;
   String? phone;
   bool? maid;
+  Address? address;
+  String? category;
   String? token;
 
   User({
@@ -18,6 +20,8 @@ class User {
     this.password,
     this.phone,
     this.maid,
+    this.address,
+    this.category,
     this.token,
   });
 
@@ -29,6 +33,9 @@ class User {
     password = json['password'];
     phone = json['phone'];
     maid = json['maid'];
+    address =
+        json['address'] != null ? Address.fromJson(json['address']) : null;
+    token = json['category'];
     token = json['token'];
   }
 
@@ -41,7 +48,33 @@ class User {
     data['password'] = password;
     data['phone'] = phone;
     data['maid'] = maid;
+    if (address != null) {
+      data['address'] = address!.toJson();
+    }
+    data['category'] = token;
     data['token'] = token;
+    return data;
+  }
+}
+
+class Address {
+  String? tombon;
+  String? amphure;
+  String? province;
+
+  Address({this.tombon, this.amphure, this.province});
+
+  Address.fromJson(Map<String, dynamic> json) {
+    tombon = json['tombon'];
+    amphure = json['amphure'];
+    province = json['province'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['tombon'] = tombon;
+    data['amphure'] = amphure;
+    data['province'] = province;
     return data;
   }
 }
