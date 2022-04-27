@@ -64,24 +64,24 @@ class _ProfilePageState extends State<ProfilePage> {
                   RowText(label: 'ชื่อ', widget: Text('$_name')),
                   RowText(label: 'อีเมลล์', widget: Text('$_email')),
                   RowText(label: 'เบอร์โทรศัพท์', widget: Text('$_phone')),
-                  // InkWell(
-                  //   onTap: () {
-                  //     Navigator.push(
-                  //         context,
-                  //         MaterialPageRoute(
-                  //             builder: (_) => const MaidSetupPage()));
-                  //   },
-                  //   child: RowText(
-                  //       label: 'ตั้งคาแม่บ้าน',
-                  //       widget: Text(_maid == true ? "แม่บ้าน" : 'ลูกค้า')),
-                  // ),
-                  RowText(
-                      label: 'สถานะ',
-                      widget: _maid == false
-                          ? ElevatedButton(
-                              onPressed: () => regisMaid(context, _id!),
-                              child: const Text('ลงทะเบียนแม่บ้านที่นี่'))
-                          : const Text('แม่บ้าน')),
+                  InkWell(
+                    onTap: () {
+                      // Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //         builder: (_) => const MaidSetupPage()));
+                    },
+                    child: RowText(
+                        label: 'ตั้งคาแม่บ้าน',
+                        widget: Text(_maid == true ? "แม่บ้าน" : 'ลูกค้า')),
+                  ),
+                  // RowText(
+                  //     label: 'สถานะ',
+                  //     widget: _maid == false
+                  //         ? ElevatedButton(
+                  //             onPressed: () => regisMaid(context, _id!),
+                  //             child: const Text('ลงทะเบียนแม่บ้านที่นี่'))
+                  //         : const Text('แม่บ้าน')),
                   RowText(
                       label: '',
                       widget: ElevatedButton(
