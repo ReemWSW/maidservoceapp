@@ -20,17 +20,20 @@ class UserProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void setAddressMaid(String province, String amphure, String tombon) {
+  Future setPostMaid(
+      bool maid, String province, String amphure, String tombon) async {
+    _user.maid = maid;
     _user.address!.province = province;
     _user.address!.amphure = amphure;
     _user.address!.tombon = tombon;
-    notifyListeners();
-  }
 
-  void setPostMaid(bool maid) {
-    _user.maid = maid;
     notifyListeners();
-    UserPreferences().setMaid(maid);
+    UserPreferences().setMaid(
+      maid,
+      province,
+      amphure,
+      tombon,
+    );
   }
 
   Future<Map<String, dynamic>> setMaid(
@@ -65,8 +68,20 @@ class UserProvider with ChangeNotifier {
     if (response.statusCode == 200) {
       var userData = responseData['data'];
 
-      UserPreferences().setMaid(maid!);
+      UserPreferences().setMaid(
+        maid!,
+        province,
+        amphure,
+        tombon,
+      );
       _user.maid = maid;
+
+      var address = _user.address;
+      if (address != null) {
+        address.province = province;
+        address.amphure = amphure;
+        address.tombon = tombon;
+      }
       notifyListeners();
 
       result = {
