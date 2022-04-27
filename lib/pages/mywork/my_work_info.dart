@@ -103,7 +103,7 @@ class MyWorkInfo extends StatelessWidget {
                                         'EnumOrder.ACCEPT');
                                 Navigator.of(context).pushAndRemoveUntil(
                                     MaterialPageRoute(
-                                        builder: (context) => const HomePage()),
+                                        builder: (context) => const HomePage(page: 2)),
                                     (Route<dynamic> route) => false);
                               },
                               child: const Text('รับงาน'),

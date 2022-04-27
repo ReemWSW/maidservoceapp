@@ -91,7 +91,7 @@ class _OrderPageState extends State<OrderPage> {
           Order order = response['data'];
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const HomePage()),
+            MaterialPageRoute(builder: (context) => const HomePage(page: 1)),
           );
         } else {
           Flushbar(

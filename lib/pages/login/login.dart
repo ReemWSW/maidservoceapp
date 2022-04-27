@@ -42,8 +42,8 @@ class _LoginPageState extends State<LoginPage> {
         if (response['status']) {
           User user = response['user'];
           Provider.of<UserProvider>(context, listen: false).setUser(user);
-          Navigator.push(
-              context, MaterialPageRoute(builder: (_) => const HomePage()));
+          Navigator.push(context,
+              MaterialPageRoute(builder: (_) => const HomePage(page: 0)));
         } else {
           Flushbar(
             title: "ไม่สามารถเข้าสู่ระบบได้",

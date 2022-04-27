@@ -6,7 +6,9 @@ import '../pages/mywork/my_work.dart';
 import '../pages/profile/profile.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({Key? key,required this.page}) : super(key: key);
+
+  final int? page;
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -19,12 +21,13 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
+    _selectedIndex = widget.page!;
     super.initState();
   }
 
   static final List<Widget> _widgetOptions = <Widget>[
     const Home(),
-    ListPage(),
+    const ListPage(),
     const MyWorkPage(),
     const ProfilePage(),
   ];

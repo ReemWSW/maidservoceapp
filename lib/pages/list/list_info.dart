@@ -103,7 +103,8 @@ class ListInfoPage extends StatelessWidget {
 
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const HomePage()),
+                  MaterialPageRoute(
+                      builder: (context) => const HomePage(page: 1)),
                 );
               },
               backgroundColor: Colors.green,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:maid/providers/order_provider.dart';
 import 'package:maid/utils/sharepreferences/auth.dart';
+import 'package:maid/widget/bottombar.dart';
 import 'package:provider/provider.dart';
 
 import 'widgets/list_order.dart';
@@ -43,7 +44,17 @@ class _ListPageState extends State<ListPage> {
               backgroundColor: Colors.green,
               elevation: 0,
               actions: [
-                IconButton(onPressed: () {}, icon: const Icon(Icons.refresh))
+                IconButton(
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                        context,
+                        PageRouteBuilder(
+                          transitionDuration: Duration.zero,
+                          pageBuilder: (_, __, ___) => const HomePage(page: 1),
+                        ),
+                      );
+                    },
+                    icon: const Icon(Icons.refresh))
               ],
               bottom: TabBar(
                   labelColor: Colors.green,
