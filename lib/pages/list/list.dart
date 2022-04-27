@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:maid/models/order.dart';
 import 'package:maid/providers/order_provider.dart';
 import 'package:maid/utils/sharepreferences/auth.dart';
 import 'package:maid/widget/bottombar.dart';
@@ -19,6 +22,8 @@ class ListPage extends StatefulWidget {
 class _ListPageState extends State<ListPage> {
   List<String> name = ['รายการปัจจุบัน', 'รายการที่ผ่าน', 'รีวิว'];
   String? _idCustomer;
+
+  List? order;
 
   void fetchData() async {
     await UserPreferences().getUser().then((user) {
@@ -79,28 +84,34 @@ class _ListPageState extends State<ListPage> {
                       'ไม่มีข้อมูล',
                       style: TextStyle(fontSize: 25, color: Colors.grey),
                     ));
-                return TabBarView(
-                  children: <Widget>[
-                    if (order.waitOrder!.isNotEmpty)
-                      ListOrder(
-                        booking: true,
-                        order: order.waitOrder!,
-                      )
-                    else
-                      align,
-                    if (order.acceptOrder!.isNotEmpty)
-                      ListOrder(
-                        booking: false,
-                        order: order.acceptOrder!,
-                      )
-                    else
-                      align,
-                    if (order.successOrder!.isNotEmpty)
-                      ReviewWidget(order: order.successOrder!)
-                    else
-                      align,
-                  ],
-                );
+                if (order.loadingOrderStatus != StatusOrder.LOADING) {
+                  return TabBarView(
+                    children: <Widget>[
+                      if (order.waitOrder!.isNotEmpty)
+                        ListOrder(
+                          booking: true,
+                          order: order.waitOrder!,
+                        )
+                      else
+                        align,
+                      if (order.acceptOrder!.isNotEmpty)
+                        ListOrder(
+                          booking: false,
+                          order: order.acceptOrder!,
+                        )
+                      else
+                        align,
+                      if (order.successOrder!.isNotEmpty)
+                        ReviewWidget(order: order.successOrder!)
+                      else
+                        align,
+                    ],
+                  );
+                } else {
+                  return const Align(
+                      alignment: Alignment.center,
+                      child: CircularProgressIndicator());
+                }
               },
             )));
   }

@@ -71,34 +71,42 @@ class _MyWorkPageState extends State<MyWorkPage> {
                   icon: const Icon(Icons.refresh))
             ],
           ),
-          body: Consumer<OrderProvider>(builder: (context, order, child) {
-            const align = Align(
-                alignment: Alignment.center,
-                child: Text(
-                  'ไม่มีข้อมูล',
-                  style: TextStyle(fontSize: 25, color: Colors.grey),
-                ));
-            return TabBarView(children: [
-              if (order.waitOrder!.isNotEmpty)
-                ListWork(
-                  booking: true,
-                  order: order.waitOrder!,
-                )
-              else
-                align,
-              if (order.acceptOrder!.isNotEmpty)
-                ListWork(
-                  booking: true,
-                  order: order.acceptOrder!,
-                )
-              else
-                align,
-              if (order.successOrder!.isNotEmpty)
-                ReviewWork(order: order.successOrder!)
-              else
-                align,
-            ]);
-          }),
+          body: Consumer<OrderProvider>(
+            builder: (context, order, child) {
+              const align = Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    'ไม่มีข้อมูล',
+                    style: TextStyle(fontSize: 25, color: Colors.grey),
+                  ));
+              if (order.loadingOrderStatus != StatusOrder.LOADING) {
+                return TabBarView(children: [
+                  if (order.waitOrder!.isNotEmpty)
+                    ListWork(
+                      booking: true,
+                      order: order.waitOrder!,
+                    )
+                  else
+                    align,
+                  if (order.acceptOrder!.isNotEmpty)
+                    ListWork(
+                      booking: true,
+                      order: order.acceptOrder!,
+                    )
+                  else
+                    align,
+                  if (order.successOrder!.isNotEmpty)
+                    ReviewWork(order: order.successOrder!)
+                  else
+                    align,
+                ]);
+              } else {
+                return const Align(
+                    alignment: Alignment.center,
+                    child: CircularProgressIndicator());
+              }
+            },
+          ),
         ));
   }
 }
