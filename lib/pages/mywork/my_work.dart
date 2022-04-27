@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:maid/providers/order_provider.dart';
 import 'package:maid/utils/sharepreferences/auth.dart';
+import 'package:maid/widget/bottombar.dart';
 import 'package:provider/provider.dart';
 
 import 'widgets/list_work.dart';
@@ -56,6 +57,19 @@ class _MyWorkPageState extends State<MyWorkPage> {
                         child: Align(
                             alignment: Alignment.center, child: Text(label))))
                     .toList()),
+            actions: [
+              IconButton(
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                      context,
+                      PageRouteBuilder(
+                        transitionDuration: Duration.zero,
+                        pageBuilder: (_, __, ___) => const HomePage(page: 2),
+                      ),
+                    );
+                  },
+                  icon: const Icon(Icons.refresh))
+            ],
           ),
           body: Consumer<OrderProvider>(builder: (context, order, child) {
             const align = Align(
