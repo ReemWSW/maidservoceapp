@@ -21,7 +21,7 @@ class ListPage extends StatefulWidget {
 
 class _ListPageState extends State<ListPage> {
   List<String> name = ['รายการปัจจุบัน', 'รายการที่ผ่าน', 'รีวิว'];
-  String? _idCustomer, _tombon;
+  String? _idCustomer, _tombon, _categoryUser;
 
   List? order;
 
@@ -29,9 +29,10 @@ class _ListPageState extends State<ListPage> {
     await UserPreferences().getUser().then((user) {
       _idCustomer = user.id;
       _tombon = user.address!.tombon;
+      _categoryUser = user.category;
     });
     await Provider.of<OrderProvider>(context, listen: false)
-        .getorderCustomer(_idCustomer!, true, _tombon!);
+        .getorderCustomer(_idCustomer!, true, _tombon!, _categoryUser!);
   }
 
   @override

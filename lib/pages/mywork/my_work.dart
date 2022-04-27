@@ -18,7 +18,7 @@ class MyWorkPage extends StatefulWidget {
 
 class _MyWorkPageState extends State<MyWorkPage> {
   List<String> name = ['รับงาน', 'รับงานแล้ว', 'รีวิว'];
-  String? _idMaid, _tombon;
+  String? _idMaid, _tombon, _categoryUser;
   bool? _maid;
 
   void fetchData() async {
@@ -26,9 +26,10 @@ class _MyWorkPageState extends State<MyWorkPage> {
       _idMaid = user.id;
       _maid = user.maid;
       _tombon = user.address!.tombon;
+      _categoryUser = user.category;
     });
     await Provider.of<OrderProvider>(context, listen: false)
-        .getorderCustomer(_idMaid!, false, _tombon!);
+        .getorderCustomer(_idMaid!, false, _tombon!, _categoryUser!);
   }
 
   @override
