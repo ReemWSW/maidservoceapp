@@ -35,12 +35,6 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  void regisMaid(BuildContext context, String _id) async {
-    // Provider.of<UserProvider>(context, listen: false).setPostMaid();
-    // Provider.of<UserProvider>(context, listen: false).setMaid(_id);
-    setState(() {});
-  }
-
   @override
   Widget build(BuildContext context) {
     UserPreferences().getUser().then((user) {
