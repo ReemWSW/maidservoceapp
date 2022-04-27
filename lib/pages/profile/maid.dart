@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:maid/pages/profile/widgets/row_text.dart';
 import 'package:maid/providers/user_provider.dart';
 import 'package:maid/utils/sharepreferences/auth.dart';
 import 'package:maid/widget/button_long.dart';
-import 'package:maid/widget/textfield_custom.dart';
+import 'package:maid/widget/method.dart';
 import 'package:provider/provider.dart';
 
-import 'address_maid.dart';
+import 'widgets/address_maid.dart';
 
 class MaidSetupPage extends StatefulWidget {
-  MaidSetupPage({Key? key}) : super(key: key);
+  const MaidSetupPage({Key? key}) : super(key: key);
 
   @override
   State<MaidSetupPage> createState() => _MaidSetupPageState();
@@ -26,6 +25,19 @@ class _MaidSetupPageState extends State<MaidSetupPage> {
   String? _address;
   bool valuefirst = false;
 
+  List? _resultProvince;
+  List? _resultAmphure;
+  List? _resultTombon;
+
+  String dropdownvalue = 'ซักผ้า';
+
+  var items = [
+    'ซักผ้า',
+    'ทำความสะอาดบ้าน',
+    'ทำความสะอาดเฟอร์นิเจอร์',
+    'ทำความสะอาดทั้งหมด',
+  ];
+
   void fetchUser() async {
     await UserPreferences().getUser().then((user) {
       setState(() {
@@ -40,6 +52,17 @@ class _MaidSetupPageState extends State<MaidSetupPage> {
     await Provider.of<UserProvider>(context, listen: false).setMaid(_id, maid);
   }
 
+  final TextEditingController _provinceController = TextEditingController();
+  final TextEditingController _amphureController = TextEditingController();
+  final TextEditingController _tombonController = TextEditingController();
+
+  String? provinceValidate(String? value) =>
+      value!.isEmpty ? 'กรุณาระบุจังหวัด' : null;
+  String? amphureValidate(String? value) =>
+      value!.isEmpty ? 'กรุณาระบุอำเภอ' : null;
+  String? tombonValidate(String? value) =>
+      value!.isEmpty ? 'กรุณาระบุตำบล' : null;
+
   @override
   void initState() {
     fetchUser();
@@ -49,6 +72,11 @@ class _MaidSetupPageState extends State<MaidSetupPage> {
 
   @override
   Widget build(BuildContext context) {
+    var boxDecoration = BoxDecoration(
+        border:
+            Border.all(width: 1, color: Colors.grey, style: BorderStyle.solid),
+        borderRadius: BorderRadius.circular(5));
+    const edgeInsets = EdgeInsets.all(5);
     return Scaffold(
       appBar: AppBar(
         title: const Text('ตั้งค่าแม่บ้าน'),
@@ -59,47 +87,56 @@ class _MaidSetupPageState extends State<MaidSetupPage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'บริเวณที่ต้องการทำงาน',
-                  style: TextStyle(fontSize: 20),
-                ),
-                TextFieldCustom(
-                    hintText: 'ที่อยู่',
-                    icon: Icons.location_on,
-                    controller: _addressController,
-                    validator: addressValidate,
-                    onSaved: (value) => _address = value,
-                    readOnly: true,
-                    onTap: () async {
-                      address = await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => const AddressMaidPage(),
-                        ),
-                      );
-
-                      setState(() {
-                        setState(() {
-                          _addressController.text =
-                              "${address![0]} ${address![1]} ${address![2]}";
-                        });
-                      });
-                    }),
+                Container(
+                    padding: edgeInsets,
+                    decoration: boxDecoration,
+                    child: const AddressMaid()),
                 const SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text('สถานะแม่บ้าน', style: TextStyle(fontSize: 16)),
-                    Checkbox(
-                        value: valuefirst,
-                        onChanged: (value) {
-                          setState(() {
-                            valuefirst = value!;
-                          });
-                        }),
-                  ],
-                )
+                Container(
+                  padding: edgeInsets,
+                  decoration: boxDecoration,
+                  child: Column(
+                    children: [
+                      label('เลือกรูปแบบ'),
+                      dropdownCategory(),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 30),
+                Container(
+                  padding: edgeInsets,
+                  decoration: boxDecoration,
+                  child: Column(
+                    children: [
+                      label('สถานะ'),
+                      Container(
+                        padding: const EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                                width: 1,
+                                style: BorderStyle.solid,
+                                color: Colors.grey),
+                            borderRadius: BorderRadius.circular(5)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text('สถานะแม่บ้าน',
+                                style: TextStyle(fontSize: 16)),
+                            Checkbox(
+                                value: valuefirst,
+                                onChanged: (value) {
+                                  setState(() {
+                                    valuefirst = value!;
+                                  });
+                                }),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ),
               ],
             ),
             ButtonLong(
@@ -116,6 +153,33 @@ class _MaidSetupPageState extends State<MaidSetupPage> {
           ],
         ),
       ),
+    );
+  }
+
+  DropdownButtonFormField<String> dropdownCategory() {
+    return DropdownButtonFormField(
+      decoration: InputDecoration(
+        hintText: 'data![index]["head"]',
+        border: OutlineInputBorder(
+          borderSide: const BorderSide(color: Colors.grey, width: 1),
+          borderRadius: BorderRadius.circular(5),
+        ),
+        filled: true,
+      ),
+      validator: (value) => value == null ? "กรุณาเลือกรูปแบบที่ต้องการ" : null,
+      value: dropdownvalue,
+      onChanged: (String? newValue) {
+        dropdownvalue = newValue!;
+      },
+      items: items.map((str) {
+        return DropdownMenuItem<String>(
+          value: str,
+          child: Text(
+            str,
+            style: const TextStyle(color: Colors.black),
+          ),
+        );
+      }).toList(),
     );
   }
 }
