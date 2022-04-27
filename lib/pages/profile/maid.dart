@@ -59,13 +59,13 @@ class _MaidSetupPageState extends State<MaidSetupPage> {
   }
 
   Future regisMaid(
-    BuildContext context,
-    String _id,
-    bool maid,
-    String _province,
-    String _amphure,
-    String _tombon,
-  ) async {
+      BuildContext context,
+      String _id,
+      bool maid,
+      String _province,
+      String _amphure,
+      String _tombon,
+      String maidcategory) async {
     // Provider.of<UserProvider>(context, listen: false).setPostMaid(
     //   maid,
     //   _province,
@@ -73,7 +73,7 @@ class _MaidSetupPageState extends State<MaidSetupPage> {
     //   _tombon,
     // );
     await Provider.of<UserProvider>(context, listen: false)
-        .setMaid(_id, maid, _province, _amphure, _tombon);
+        .setMaid(_id, maid, _province, _amphure, _tombon, maidcategory);
   }
 
   String? provinceValidate(String? value) =>
@@ -234,7 +234,7 @@ class _MaidSetupPageState extends State<MaidSetupPage> {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
                     await regisMaid(context, _id!, valuefirst, _province!,
-                        _amphure!, _tombon!);
+                        _amphure!, _tombon!, maidcategory!);
                     Navigator.pop(context, [
                       _tombon,
                       _amphure,
