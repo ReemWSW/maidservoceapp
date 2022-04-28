@@ -16,11 +16,10 @@ class UserPreferences {
     prefs.setString("phone", user.phone!);
     prefs.setString("token", user.token!);
     prefs.setBool("maid", user.maid!);
-    var address = user.address;
-    if (address != null) {
-      prefs.setString("amphure", address.amphure!);
-      prefs.setString("province", address.province!);
-      prefs.setString("tombon", address.tombon!);
+    if (user.address != null) {
+      prefs.setString("province", user.address!.province!);
+      prefs.setString("tombon", user.address!.tombon!);
+      prefs.setString("amphure", user.address!.amphure!);
     }
     if (user.category != null) prefs.setString("category", user.category!);
 

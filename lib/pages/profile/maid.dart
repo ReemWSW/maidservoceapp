@@ -34,7 +34,7 @@ class _MaidSetupPageState extends State<MaidSetupPage> {
   List? _resultAmphure;
   List? _resultTombon;
 
-  String? maidcategory = null;
+  String? maidcategory;
 
   var items = [
     'ซักผ้า',
