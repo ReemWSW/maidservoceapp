@@ -47,7 +47,6 @@ class AuthProvider with ChangeNotifier {
     if (response.statusCode == 200) {
       var userData = responseData['data'];
       User authUser = User.fromJson(userData);
-      print(userData);
       UserPreferences().saveUser(authUser);
 
       _loggedInStatus = Status.LoggedIn;

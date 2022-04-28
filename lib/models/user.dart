@@ -35,11 +35,13 @@ class User {
     password = json['password'];
     phone = json['phone'];
     maid = json['maid'];
+
     address =
         json['address'] != null ? Address.fromJson(json['address']) : null;
+
     category = json['category'];
-    datetime =
-        json['address'] != null ? DateTime.tryParse(json['datetime']) : null;
+    if (json['datetime'] != null) datetime = DateTime.parse(json['datetime']);
+
     token = json['token'];
   }
 
