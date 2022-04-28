@@ -5,6 +5,7 @@ import 'package:maid/pages/order/widgets/amphure.dart';
 import 'package:maid/pages/order/widgets/provinces.dart';
 import 'package:maid/pages/order/widgets/tombon.dart';
 import 'package:maid/providers/user_provider.dart';
+import 'package:maid/utils/enum.dart';
 import 'package:maid/utils/sharepreferences/auth.dart';
 import 'package:maid/widget/button_long.dart';
 import 'package:maid/widget/method.dart';
@@ -50,13 +51,32 @@ class _MaidSetupPageState extends State<MaidSetupPage> {
 
   void fetchUser() async {
     await UserPreferences().getUser().then((user) {
+      var categoryPost;
+
+      switch (user.category!) {
+        case 'Categories.wash':
+          categoryPost = 'ซักผ้า';
+          break;
+        case 'Categories.clean':
+          categoryPost = "ทำความสะอาดบ้าน";
+          break;
+        case 'Categories.furniture':
+          categoryPost = "ทำความสะอาดเฟอร์นิเจอร์";
+          break;
+        case 'Categories.all':
+          categoryPost = "ทำความสะอาดทั้งหมด";
+          break;
+        default:
+          categoryPost = user.category!;
+      }
+      print(categoryPost);
       setState(() {
         valuefirst = user.maid!;
         _id = user.id;
         _province = user.address!.province!;
         _amphure = user.address!.amphure!;
         _tombon = user.address!.tombon!;
-        maidcategory = user.category;
+        maidcategory = categoryPost;
         _selectedDate = user.datetime!;
         _timeController.text = DateFormat.Hms().format(_selectedDate);
         _dateController.text = DateFormat('yyyy-MM-dd').format(_selectedDate);

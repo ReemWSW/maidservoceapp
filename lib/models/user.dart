@@ -38,7 +38,8 @@ class User {
     address =
         json['address'] != null ? Address.fromJson(json['address']) : null;
     category = json['category'];
-    datetime = DateTime.tryParse(json['datetime']);
+    datetime =
+        json['address'] != null ? DateTime.tryParse(json['datetime']) : null;
     token = json['token'];
   }
 

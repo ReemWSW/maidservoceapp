@@ -28,7 +28,9 @@ class _ListPageState extends State<ListPage> {
   void fetchData() async {
     await UserPreferences().getUser().then((user) {
       _idCustomer = user.id;
-      _tombon = user.address!.tombon;
+      user.address!.tombon == null
+          ? _tombon = '-'
+          : _tombon = user.address!.tombon;
       _categoryUser = user.category;
     });
     await Provider.of<OrderProvider>(context, listen: false)

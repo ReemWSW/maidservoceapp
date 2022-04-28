@@ -3,6 +3,7 @@
 import 'dart:async';
 
 import 'package:maid/models/user.dart';
+import 'package:maid/utils/enum.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserPreferences {
@@ -14,14 +15,32 @@ class UserPreferences {
     prefs.setString("name", user.name!);
     prefs.setString("email", user.email!);
     prefs.setString("phone", user.phone!);
-    prefs.setString("token", user.token!);
+    if (user.token != null) prefs.setString("token", user.token!);
     prefs.setBool("maid", user.maid!);
     if (user.address != null) {
       prefs.setString("province", user.address!.province!);
       prefs.setString("tombon", user.address!.tombon!);
       prefs.setString("amphure", user.address!.amphure!);
     }
-    if (user.category != null) prefs.setString("category", user.category!);
+    var categoryPost;
+
+    switch (user.category!) {
+      case 'ซักผ้า':
+        categoryPost = "${Categories.wash}";
+        break;
+      case 'ทำความสะอาดบ้าน':
+        categoryPost = "${Categories.clean}";
+        break;
+      case 'ทำความสะอาดเฟอร์นิเจอร์':
+        categoryPost = "${Categories.furniture}";
+        break;
+      case 'ทำความสะอาดทั้งหมด':
+        categoryPost = "${Categories.all}";
+        break;
+      default:
+        categoryPost = user.category!;
+    }
+    if (user.category != null) prefs.setString("category", categoryPost);
     if (user.datetime != null) {
       prefs.setString("datetime", user.datetime.toString());
     }
