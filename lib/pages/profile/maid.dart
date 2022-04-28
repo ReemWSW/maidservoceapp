@@ -247,11 +247,16 @@ class _MaidSetupPageState extends State<MaidSetupPage> {
                               style: BorderStyle.solid,
                               color: Colors.grey),
                           borderRadius: BorderRadius.circular(5)),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      child: Column(
                         children: [
-                          textfieldDatePicker(context),
-                          textfieldTimePicker(context),
+                          label('วันและเวลาปฏิบัติงาน'),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              textfieldDatePicker(context),
+                              textfieldTimePicker(context),
+                            ],
+                          ),
                         ],
                       ),
                     ),
