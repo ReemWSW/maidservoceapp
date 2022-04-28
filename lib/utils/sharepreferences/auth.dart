@@ -22,6 +22,9 @@ class UserPreferences {
       prefs.setString("amphure", user.address!.amphure!);
     }
     if (user.category != null) prefs.setString("category", user.category!);
+    if (user.datetime != null) {
+      prefs.setString("datetime", user.datetime.toString());
+    }
 
     return prefs.commit();
   }
@@ -32,6 +35,7 @@ class UserPreferences {
     String amphure,
     String tombon,
     String category,
+    DateTime datetime,
   ) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -40,6 +44,8 @@ class UserPreferences {
     prefs.setString("province", province);
     prefs.setString("tombon", tombon);
     prefs.setString("category", category);
+
+    prefs.setString("datetime", datetime.toString());
 
     return prefs.commit();
   }
@@ -57,6 +63,7 @@ class UserPreferences {
     String? province = prefs.getString("province");
     String? tombon = prefs.getString("tombon");
     String? category = prefs.getString("category");
+    String? datetime = prefs.getString("datetime");
     String? token = prefs.getString("token");
 
     var address = Address(tombon: tombon, amphure: amphure, province: province);
@@ -70,6 +77,7 @@ class UserPreferences {
       maid: maid,
       address: address,
       category: category,
+      datetime: DateTime.tryParse(datetime!),
       token: token,
     );
   }

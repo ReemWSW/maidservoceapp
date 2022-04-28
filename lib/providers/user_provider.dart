@@ -21,20 +21,8 @@ class UserProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future setPostMaid(bool maid, String province, String amphure, String tombon,
-      String category) async {
-    _user.maid = maid;
-    _user.address!.province = province;
-    _user.address!.amphure = amphure;
-    _user.address!.tombon = tombon;
-    _user.category = category;
-
-    notifyListeners();
-    UserPreferences().setMaid(maid, province, amphure, tombon, category);
-  }
-
   Future<Map<String, dynamic>> setMaid(String? id, bool? maid, String province,
-      String amphure, String tombon, String category) async {
+      String amphure, String tombon, String category, DateTime datetime) async {
     var categoryPost;
     switch (category) {
       case 'ซักผ้า':
@@ -62,6 +50,7 @@ class UserProvider with ChangeNotifier {
         'amphure': amphure,
         'tombon': tombon,
         'category': categoryPost,
+        'datetime': datetime.toString()
       }),
       headers: {'Content-Type': 'application/json'},
     );
@@ -70,13 +59,8 @@ class UserProvider with ChangeNotifier {
     if (response.statusCode == 200) {
       var userData = responseData['data'];
 
-      UserPreferences().setMaid(
-        maid!,
-        province,
-        amphure,
-        tombon,
-        category,
-      );
+      UserPreferences()
+          .setMaid(maid!, province, amphure, tombon, category, datetime);
       _user.maid = maid;
       _user.category = category;
 

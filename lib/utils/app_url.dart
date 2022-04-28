@@ -1,8 +1,8 @@
 class AppUrl {
-  static const String liveBaseURL = "https://maid-2422.herokuapp.com";
-  // static const String localBaseURL = "http://10.0.2.2:3000";
+  // static const String liveBaseURL = "https://maid-2422.herokuapp.com";
+  static const String localBaseURL = "http://10.0.2.2:3000";
 
-  static const String baseURL = liveBaseURL;
+  static const String baseURL = localBaseURL;
   static const String login = baseURL + "/login";
   static const String register = baseURL + "/register";
 

@@ -10,6 +10,7 @@ class User {
   bool? maid;
   Address? address;
   String? category;
+  DateTime? datetime;
   String? token;
 
   User({
@@ -22,6 +23,7 @@ class User {
     this.maid,
     this.address,
     this.category,
+    this.datetime,
     this.token,
   });
 
@@ -35,7 +37,8 @@ class User {
     maid = json['maid'];
     address =
         json['address'] != null ? Address.fromJson(json['address']) : null;
-    token = json['category'];
+    category = json['category'];
+    datetime = DateTime.tryParse(json['datetime']);
     token = json['token'];
   }
 
@@ -51,7 +54,8 @@ class User {
     if (address != null) {
       data['address'] = address!.toJson();
     }
-    data['category'] = token;
+    data['category'] = category;
+    data['datetime'] = datetime;
     data['token'] = token;
     return data;
   }
