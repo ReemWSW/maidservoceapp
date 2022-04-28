@@ -34,7 +34,7 @@ class _MaidSetupPageState extends State<MaidSetupPage> {
   List? _resultAmphure;
   List? _resultTombon;
 
-  String? maidcategory = null;
+  String? maidcategory;
 
   var items = [
     'ซักผ้า',
@@ -51,6 +51,7 @@ class _MaidSetupPageState extends State<MaidSetupPage> {
         _province = user.address!.province!;
         _amphure = user.address!.amphure!;
         _tombon = user.address!.tombon!;
+        maidcategory = user.category;
       });
     });
     _provinceController.text = _province!;

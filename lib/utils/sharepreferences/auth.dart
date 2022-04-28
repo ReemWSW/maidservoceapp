@@ -16,10 +16,12 @@ class UserPreferences {
     prefs.setString("phone", user.phone!);
     prefs.setString("token", user.token!);
     prefs.setBool("maid", user.maid!);
-    prefs.setString("amphure", user.address!.amphure!);
-    prefs.setString("province", user.address!.province!);
-    prefs.setString("category", user.category!);
-    prefs.setString("tombon", user.address!.tombon!);
+    if (user.address != null) {
+      prefs.setString("province", user.address!.province!);
+      prefs.setString("tombon", user.address!.tombon!);
+      prefs.setString("amphure", user.address!.amphure!);
+    }
+    if (user.category != null) prefs.setString("category", user.category!);
 
     return prefs.commit();
   }
@@ -33,7 +35,7 @@ class UserPreferences {
   ) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    print(province);
+    print(category);
 
     prefs.setBool("maid", maid);
     prefs.setString("amphure", amphure);
@@ -69,6 +71,7 @@ class UserPreferences {
       phone: phone,
       maid: maid,
       address: address,
+      category: category,
       token: token,
     );
   }
